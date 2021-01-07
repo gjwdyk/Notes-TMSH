@@ -79,6 +79,7 @@ tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from
 ║   HTTP Profile   ║
 ╚══════════════════╝
 
+tmsh create ltm profile http /Common/HTTP_Profile { app-service none defaults-from http proxy-type reverse }
 
 
 
@@ -86,9 +87,15 @@ tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from
 ║   TCP Analytics Profile   ║
 ╚═══════════════════════════╝
 
+
+
+
 ╔════════════════════════════╗
 ║   HTTP Analytics Profile   ║
 ╚════════════════════════════╝
+
+
+
 
 ╔═════════════════════════════╗
 ║   TLS Client Side Profile   ║
