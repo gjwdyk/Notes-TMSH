@@ -13,18 +13,23 @@
 ║   Common Generic Note   ║
 ╚═════════════════════════╝
 
+This note is made to expedite implementation on AWS, without lengthy manual configuration. Create Nodes :
+
+tmsh create ltm node 10.1.10.1 { address 10.1.10.1 }
+tmsh create ltm node 10.1.20.11 { address 10.1.20.11 }
+tmsh create ltm node 10.1.20.12 { address 10.1.20.12 }
+tmsh create ltm node 10.1.20.13 { address 10.1.20.13 }
+tmsh create ltm node 10.1.20.17 { address 10.1.20.17 }
+tmsh create ltm node 10.1.20.20 { address 10.1.20.20 }
+tmsh create ltm node 10.1.20.32 { address 10.1.20.32 }
+tmsh create ltm node 10.1.20.41 { address 10.1.20.41 }
+tmsh create ltm node 10.1.20.42 { address 10.1.20.42 }
+tmsh create ltm node 10.1.20.43 { address 10.1.20.43 }
+tmsh create ltm node 10.1.20.44 { address 10.1.20.44 }
+tmsh create ltm node 10.1.20.251 { address 10.1.20.251 }
+tmsh create ltm node 10.1.20.252 { address 10.1.20.252 }
 
 
-
-
-Configuration Items:
-  /Tenant_Class/10.1.10.1     /Tenant_Class/10.1.20.12    /Tenant_Class/10.1.20.17    /Tenant_Class/10.1.20.251   /Tenant_Class/10.1.20.32    /Tenant_Class/10.1.20.42    /Tenant_Class/10.1.20.44
-  /Tenant_Class/10.1.20.11    /Tenant_Class/10.1.20.13    /Tenant_Class/10.1.20.20    /Tenant_Class/10.1.20.252   /Tenant_Class/10.1.20.41    /Tenant_Class/10.1.20.43
-admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node /Tenant_Class/10.1.
-Configuration Items:
-  /Tenant_Class/10.1.10.1     /Tenant_Class/10.1.20.12    /Tenant_Class/10.1.20.17    /Tenant_Class/10.1.20.251   /Tenant_Class/10.1.20.32    /Tenant_Class/10.1.20.42    /Tenant_Class/10.1.20.44
-  /Tenant_Class/10.1.20.11    /Tenant_Class/10.1.20.13    /Tenant_Class/10.1.20.20    /Tenant_Class/10.1.20.252   /Tenant_Class/10.1.20.41    /Tenant_Class/10.1.20.43
-admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node /Tenant_Class/10.1.10.1
 
 ╔════════════════════╗
 ║ TMSH List LTM Node ║
@@ -55,40 +60,82 @@ ltm node /Tenant_Class/10.1.10.1 {
     state unchecked
 }
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
-
-
-
-
-
-
-
+╔════════╗
+║   OR   ║
+╚════════╝
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node /Tenant_Class/10.1.10.1
 ltm node /Tenant_Class/10.1.10.1 {
     address 10.1.10.1
     partition Tenant_Class
 }
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node 19.72.10.1 all-properties
+ltm node 19.72.10.1 {
+    address 19.72.10.1
+    app-service none
+    connection-limit 0
+    description none
+    dynamic-ratio 1
+    ephemeral false
+    fqdn {
+        address-family ipv4
+        autopopulate disabled
+        down-interval 5
+        interval 3600
+        name none
+    }
+    logging disabled
+    metadata none
+    monitor default
+    partition Common
+    rate-limit disabled
+    ratio 1
+    session user-enabled
+    state unchecked
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node 19.72.10.1
+ltm node 19.72.10.1 {
+    address 19.72.10.1
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
 
+╔══════════════════════╗
+║ TMSH Create LTM Node ║
+╚══════════════════════╝
 
+tmsh create ltm node 19.72.10.1 { address 19.72.10.1 }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh create ltm node /Tenant_Class/19.72.10.1 { address 19.72.10.1 }
 
-
+Note that "address" field can not be modified after creation of Node. When attempted there is error message as follow:
 Syntax Error: "address" may not be specified in the context of the "modify" command. "address" may be specified using the following commands: create, list, show
+To change the IP Address of a node, one must delete the node and re-create a new one (which is only possible if the corresponding node has NOT been used/referenced by other configuration).
+
+tmsh delete ltm node 19.72.10.1
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh delete ltm node /Tenant_Class/19.72.10.1
 
 
 
-
-Configuration Items:
-  /Tenant_Class/Application_Class/ActiveDirectory_Pool    /Tenant_Class/Application_Class/InternetGateway_Pool    /Tenant_Class/Application_Class/ServerHTTP_Pool         /Tenant_Class/Application_Class/StaticWebServers_Pool
-  /Tenant_Class/Application_Class/DVWA_Pool               /Tenant_Class/Application_Class/LoraxStaticWeb_Pool     /Tenant_Class/Application_Class/ServerSSH_Pool
-  /Tenant_Class/Application_Class/Hackazon_Pool           /Tenant_Class/Application_Class/LoraxWebServer_Pool     /Tenant_Class/Application_Class/ServerVNC_Pool
-
-
-
-
-
-
-
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
 
 
