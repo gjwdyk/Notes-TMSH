@@ -17,6 +17,7 @@ HTTP Profile
 TCP Analytic
 HTTP Analytic
 SSL Profile (done)
+Security Log Profile (done)
 IP Reputation Profile (done)
 
 
@@ -32,6 +33,7 @@ APM Configuration (when applicable)
 
 
 Virtual Server
+
 
 
 
