@@ -1,0 +1,199 @@
+
+
+
+╔═╦═══════════════════════════╦═╗
+║ ║                           ║ ║
+╠═╬═══════════════════════════╬═╣
+║ ║ F5 LTM Profile Client SSL ║ ║
+╠═╬═══════════════════════════╬═╣
+║ ║                           ║ ║
+╚═╩═══════════════════════════╩═╝
+
+╔═════════════════════════╗
+║   Common Generic Note   ║
+╚═════════════════════════╝
+
+This note is made to expedite implementation on AWS, without lengthy manual configuration. Create a Client Side SSL Profile :
+
+tmsh install /sys crypto cert Imported-SSL-Certificate from-local-file /config/cloud/domain.name.rsa.crt
+tmsh install /sys crypto key Imported-SSL-Key from-local-file /config/cloud/domain.name.rsa.key
+tmsh create ltm profile client-ssl /Common/Client_TLS_Profile { allow-expired-crl disabled app-service none authenticate once c3d-drop-unknown-ocsp-status drop c3d-ocsp none ca-file none cert-key-chain replace-all-with { set0 { cert Imported-SSL-Certificate key Imported-SSL-Key } } cert-lookup-by-ipaddr-port disabled cipher-group none ciphers DEFAULT client-cert-ca none crl-file none description none ocsp-stapling disabled options { dont-insert-empty-fragments no-tlsv1.3 } peer-cert-mode ignore renegotiation enabled server-name none sni-default true sni-require false ssl-c3d disabled ssl-forward-proxy disabled ssl-forward-proxy-bypass disabled }
+
+
+
+Which then can be assigned to all available Virtual Servers (change the Virtual Server's Partition and Name) :
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS { profiles add { Client_TLS_Profile } }
+tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain { profiles add { Client_TLS_Profile } }
+tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS { profiles add { Client_TLS_Profile } }
+tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS { profiles add { Client_TLS_Profile } }
+
+
+
+╔══════════════════════════════════════╗
+║ TMSH Install Sys Crypto Cert and Key ║
+╚══════════════════════════════════════╝
+
+Assuming the imported Cert file is in folder /config/cloud/domain.name.rsa.crt, and will be named Imported-SSL-Certificate .
+Assuming the imported Key file is in folder /config/cloud/domain.name.rsa.key, and will be named Imported-SSL-Key .
+
+tmsh install /sys crypto cert Imported-SSL-Certificate from-local-file /config/cloud/domain.name.rsa.crt
+tmsh install /sys crypto key Imported-SSL-Key from-local-file /config/cloud/domain.name.rsa.key
+tmsh save /sys config
+
+
+
+╔══════════════════════════════════╗
+║ TMSH List LTM Profile Client SSL ║
+╚══════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile client-ssl /Tenant_Class/Application_Class/Client_TLS_Profile
+ltm profile client-ssl /Tenant_Class/Application_Class/Client_TLS_Profile {
+    allow-expired-crl disabled
+    app-service none
+    authenticate once
+    c3d-drop-unknown-ocsp-status drop
+    c3d-ocsp none
+    ca-file none
+    cert-key-chain {
+        set0 {
+            cert Imported-SSL-Certificate
+            key Imported-SSL-Key
+        }
+    }
+    cert-lookup-by-ipaddr-port disabled
+    cipher-group none
+    ciphers DEFAULT
+    client-cert-ca none
+    crl-file none
+    description none
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-cert-mode ignore
+    renegotiation enabled
+    server-name none
+    sni-default true
+    sni-require false
+    ssl-c3d disabled
+    ssl-forward-proxy disabled
+    ssl-forward-proxy-bypass disabled
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile client-ssl Client_TLS_Profile
+ltm profile client-ssl Client_TLS_Profile {
+    allow-expired-crl disabled
+    app-service none
+    authenticate once
+    c3d-drop-unknown-ocsp-status drop
+    c3d-ocsp none
+    ca-file none
+    cert-key-chain {
+        set0 {
+            cert Imported-SSL-Certificate
+            key Imported-SSL-Key
+        }
+    }
+    cert-lookup-by-ipaddr-port disabled
+    cipher-group none
+    ciphers DEFAULT
+    client-cert-ca none
+    crl-file none
+    description none
+    inherit-ca-certkeychain true
+    inherit-certkeychain false
+    ocsp-stapling disabled
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    peer-cert-mode ignore
+    renegotiation enabled
+    server-name none
+    sni-default true
+    sni-require false
+    ssl-c3d disabled
+    ssl-forward-proxy disabled
+    ssl-forward-proxy-bypass disabled
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔════════════════════════════════════╗
+║ TMSH Create LTM Profile Client SSL ║
+╚════════════════════════════════════╝
+
+tmsh create ltm profile client-ssl /Common/Client_TLS_Profile { allow-expired-crl disabled app-service none authenticate once c3d-drop-unknown-ocsp-status drop c3d-ocsp none ca-file none cert-key-chain replace-all-with { set0 { cert Imported-SSL-Certificate key Imported-SSL-Key } } cert-lookup-by-ipaddr-port disabled cipher-group none ciphers DEFAULT client-cert-ca none crl-file none description none ocsp-stapling disabled options { dont-insert-empty-fragments no-tlsv1.3 } peer-cert-mode ignore renegotiation enabled server-name none sni-default true sni-require false ssl-c3d disabled ssl-forward-proxy disabled ssl-forward-proxy-bypass disabled }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh create ltm profile client-ssl /Tenant_Class/Application_Class/Client_TLS_Profile { allow-expired-crl disabled app-service none authenticate once c3d-drop-unknown-ocsp-status drop c3d-ocsp none ca-file none cert-key-chain replace-all-with { set0 { cert Imported-SSL-Certificate key Imported-SSL-Key } } cert-lookup-by-ipaddr-port disabled cipher-group none ciphers DEFAULT client-cert-ca none crl-file none description none ocsp-stapling disabled options { dont-insert-empty-fragments no-tlsv1.3 } peer-cert-mode ignore renegotiation enabled server-name none sni-default true sni-require false ssl-c3d disabled ssl-forward-proxy disabled ssl-forward-proxy-bypass disabled }
+
+
+
+╔═════════════════════════════════════════╗
+║ TMSH List LTM Virtual Server's Profiles ║
+╚═════════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles
+ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS {
+    profiles {
+        /Tenant_Class/Application_Class/Client_TLS_Profile {
+            context clientside
+        }
+        /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
+            context all
+        }
+        /Tenant_Class/Application_Class/TCP_Analytics_Profile {
+            context all
+        }
+        f5-tcp-progressive {
+            context all
+        }
+        http {
+            context all
+        }
+    }
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═══════════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Profiles ║
+╚═══════════════════════════════════════════╝
+
+Since the Virtual Server's Profiles contains a lot of profile-types, operand "replace-all-with" can not be used.
+i.e. replacing ALL other profile-types (e.g. replacing TCP profile and HTTP profile) with only Client SSL profile certainly won't work.
+To use operand "replace-all-with", one must have a set of all types of profiles the Virtual Server needs.
+
+TMSH command for adding Client SSL profile into the Virtual Server
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { Client_TLS_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { /Tenant_Class/Application_Class/Client_TLS_Profile }
+
+The command may not work, if there is already a profile of the same type (i.e. there is already a Client SSL profile on the corresponding Virtual Server).
+If that's the case, the currently attached Client SSL profile must be removed first from the corresponding Virtual Server.
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { ServiceHTTPS_TLSServer }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { /Tenant_Class/Application_Class/ServiceHTTPS_TLSServer }
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+
