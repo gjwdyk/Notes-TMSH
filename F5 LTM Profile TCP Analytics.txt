@@ -1,0 +1,56 @@
+
+
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp-analytics /Tenant_Class/Application_Class/TCP_Analytics_Profile
+ltm profile tcp-analytics /Tenant_Class/Application_Class/TCP_Analytics_Profile {
+    app-service none
+    collect-city enabled
+    collect-continent enabled
+    collect-country enabled
+    collect-nexthop enabled
+    collect-post-code enabled
+    collect-region enabled
+    collect-remote-host-ip enabled
+    collect-remote-host-subnet enabled
+    collected-by-client-side enabled
+    collected-by-server-side enabled
+    collected-stats-external-logging disabled
+    collected-stats-internal-logging enabled
+    description TCP_Analytics_Profile_Remark
+    external-logging-publisher none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp-analytics /Tenant_Class/Application_Class/TCP_Analytics_Profile all-properties
+ltm profile tcp-analytics /Tenant_Class/Application_Class/TCP_Analytics_Profile {
+    app-service none
+    collect-city enabled
+    collect-continent enabled
+    collect-country enabled
+    collect-nexthop enabled
+    collect-post-code enabled
+    collect-region enabled
+    collect-remote-host-ip enabled
+    collect-remote-host-subnet enabled
+    collected-by-client-side enabled
+    collected-by-server-side enabled
+    collected-stats-external-logging disabled
+    collected-stats-internal-logging enabled
+    defaults-from tcp-analytics
+    description TCP_Analytics_Profile_Remark
+    external-logging-publisher none
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+
+
+
+
+
+
