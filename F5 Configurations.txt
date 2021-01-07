@@ -1,0 +1,63 @@
+
+
+
+
+
+
+
+
+
+Networking (Interface, VLAN, Self-IP Address, Default Route) should be done during on-boarding, otherwise Unit can not be licensed.
+
+Nodes
+Pools
+
+TCP Profile
+HTTP Profile
+TCP Analytic
+HTTP Analytic
+SSL Profile (done)
+IP Reputation Profile (done)
+
+
+
+Device ID configuration (when applicable)
+
+DDoS Configuration (when applicable)
+
+ASM Configuration (when applicable)
+
+APM Configuration (when applicable)
+
+
+
+Virtual Server
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
