@@ -15,19 +15,19 @@
 
 This note is made to expedite implementation on AWS, without lengthy manual configuration. Create Nodes :
 
-tmsh create ltm node 10.1.10.1 { address 10.1.10.1 }
-tmsh create ltm node 10.1.20.11 { address 10.1.20.11 }
-tmsh create ltm node 10.1.20.12 { address 10.1.20.12 }
-tmsh create ltm node 10.1.20.13 { address 10.1.20.13 }
-tmsh create ltm node 10.1.20.17 { address 10.1.20.17 }
-tmsh create ltm node 10.1.20.20 { address 10.1.20.20 }
-tmsh create ltm node 10.1.20.32 { address 10.1.20.32 }
-tmsh create ltm node 10.1.20.41 { address 10.1.20.41 }
-tmsh create ltm node 10.1.20.42 { address 10.1.20.42 }
-tmsh create ltm node 10.1.20.43 { address 10.1.20.43 }
-tmsh create ltm node 10.1.20.44 { address 10.1.20.44 }
-tmsh create ltm node 10.1.20.251 { address 10.1.20.251 }
-tmsh create ltm node 10.1.20.252 { address 10.1.20.252 }
+tmsh create ltm node /Common/10.1.10.1 { address 10.1.10.1 }
+tmsh create ltm node /Common/10.1.20.11 { address 10.1.20.11 }
+tmsh create ltm node /Common/10.1.20.12 { address 10.1.20.12 }
+tmsh create ltm node /Common/10.1.20.13 { address 10.1.20.13 }
+tmsh create ltm node /Common/10.1.20.17 { address 10.1.20.17 }
+tmsh create ltm node /Common/10.1.20.20 { address 10.1.20.20 }
+tmsh create ltm node /Common/10.1.20.32 { address 10.1.20.32 }
+tmsh create ltm node /Common/10.1.20.41 { address 10.1.20.41 }
+tmsh create ltm node /Common/10.1.20.42 { address 10.1.20.42 }
+tmsh create ltm node /Common/10.1.20.43 { address 10.1.20.43 }
+tmsh create ltm node /Common/10.1.20.44 { address 10.1.20.44 }
+tmsh create ltm node /Common/10.1.20.251 { address 10.1.20.251 }
+tmsh create ltm node /Common/10.1.20.252 { address 10.1.20.252 }
 
 
 

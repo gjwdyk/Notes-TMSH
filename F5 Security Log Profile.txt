@@ -15,29 +15,29 @@
 
 This note is made to expedite implementation on AWS, without lengthy manual configuration. Create a generic Security Log Profile :
 
-tmsh create sys log-config publisher Local_DataSafe { destinations replace-all-with { local-syslog { } } }
-tmsh create security log profile Log_ALL
-tmsh modify security log profile Log_ALL { antifraud replace-all-with { Log_ALL { events replace-all-with { alert { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${alert_type}\",\"${alert_comp}\",\"${alert_details}\",\"${alert_info_ex}\",\"${alert_score}\",\"${alert_origin}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } login { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${login_sts}\",\"${login_details}\",\"${login_affected}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } } rate-limit-template "\"${event_name}\",\"${timestamp}\",\"${vs_name}\",\"${sent}\",\"${dropped}\",\"${errors}\"" remote-publisher Local_DataSafe } } }
-tmsh modify security log profile Log_ALL { application replace-all-with { Log_ALL { filter replace-all-with { log-challenge-failure-requests { values replace-all-with { enabled } } request-type { values replace-all-with { all } } } guarantee-logging enabled guarantee-response-logging enabled response-logging all } } }
-tmsh modify security log profile Log_ALL { bot-defense replace-all-with { Log_ALL { filter { log-alarm enabled log-block enabled log-browser enabled log-browser-verification-action enabled log-captcha enabled log-challenge-failure-request enabled log-device-id-collection-request enabled log-honey-pot-page enabled log-malicious-bot enabled log-mobile-application enabled log-none enabled log-rate-limit enabled log-redirect-to-pool enabled log-suspicious-browser enabled log-tcp-reset enabled log-trusted-bot enabled log-unknown enabled log-untrusted-bot enabled } local-publisher local-db-publisher } } }
-tmsh modify security log profile Log_ALL { dos-application replace-all-with { Log_ALL { local-publisher local-db-publisher } } }
-tmsh modify security log profile Log_ALL { ip-intelligence { log-publisher local-db-publisher log-translation-fields enabled } }
+tmsh create sys log-config publisher /Common/Local_DataSafe { destinations replace-all-with { local-syslog { } } }
+tmsh create security log profile /Common/Log_ALL
+tmsh modify security log profile /Common/Log_ALL { antifraud replace-all-with { Log_ALL { events replace-all-with { alert { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${alert_type}\",\"${alert_comp}\",\"${alert_details}\",\"${alert_info_ex}\",\"${alert_score}\",\"${alert_origin}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } login { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${login_sts}\",\"${login_details}\",\"${login_affected}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } } rate-limit-template "\"${event_name}\",\"${timestamp}\",\"${vs_name}\",\"${sent}\",\"${dropped}\",\"${errors}\"" remote-publisher Local_DataSafe } } }
+tmsh modify security log profile /Common/Log_ALL { application replace-all-with { Log_ALL { filter replace-all-with { log-challenge-failure-requests { values replace-all-with { enabled } } request-type { values replace-all-with { all } } } guarantee-logging enabled guarantee-response-logging enabled response-logging all } } }
+tmsh modify security log profile /Common/Log_ALL { bot-defense replace-all-with { Log_ALL { filter { log-alarm enabled log-block enabled log-browser enabled log-browser-verification-action enabled log-captcha enabled log-challenge-failure-request enabled log-device-id-collection-request enabled log-honey-pot-page enabled log-malicious-bot enabled log-mobile-application enabled log-none enabled log-rate-limit enabled log-redirect-to-pool enabled log-suspicious-browser enabled log-tcp-reset enabled log-trusted-bot enabled log-unknown enabled log-untrusted-bot enabled } local-publisher local-db-publisher } } }
+tmsh modify security log profile /Common/Log_ALL { dos-application replace-all-with { Log_ALL { local-publisher local-db-publisher } } }
+tmsh modify security log profile /Common/Log_ALL { ip-intelligence { log-publisher local-db-publisher log-translation-fields enabled } }
 tmsh modify security log profile global-network { ip-intelligence { log-geo enabled log-shun enabled } }
 
 
 
 Which then can be assigned to all available Virtual Servers (change the Virtual Server's Partition and Name) :
 
-tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/SSH_Service_TCP { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain-Redirect- { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { Log_ALL } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/VNC_Service_TCP { security-log-profiles replace-all-with { Log_ALL } }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/SSH_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/serviceMain { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/serviceMain-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/VNC_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
 
 
 

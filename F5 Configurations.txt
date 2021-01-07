@@ -11,6 +11,17 @@ Networking (Interface, VLAN, Self-IP Address, Default Route) should be done duri
 
 
 
+╔══════════════╗
+║   Monitors   ║
+╚══════════════╝
+
+tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
+tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
+
+
+
 ╔═══════════╗
 ║   Nodes   ║
 ╚═══════════╝
@@ -30,28 +41,46 @@ tmsh create ltm node /Common/10.1.20.251 { address 10.1.20.251 }
 tmsh create ltm node /Common/10.1.20.252 { address 10.1.20.252 }
 
 
-╔══════════════╗
-║   Monitors   ║
-╚══════════════╝
-
-tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
-tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
-tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
-tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
-
-
 
 ╔═══════════╗
 ║   Pools   ║
 ╚═══════════╝
 
+tmsh create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/DVWA_Pool { members replace-all-with { /Common/10.1.20.17:80 { address 10.1.20.17 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/Hackazon_Pool { members replace-all-with { /Common/10.1.20.20:80 { address 10.1.20.20 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/InternetGateway_Pool { members replace-all-with { /Common/10.1.10.1:0 { address 10.1.10.1 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/ICMP_Gateway_8888_Monitor /Common/ICMP_Gateway_8844_Monitor } } 
+tmsh create ltm pool /Common/LoraxStaticWeb_Pool { members replace-all-with { /Common/10.1.20.41:80 { address 10.1.20.41 session user-enabled state user-up } /Common/10.1.20.42:80 { address 10.1.20.42 session user-enabled state user-up } /Common/10.1.20.43:80 { address 10.1.20.43 session user-enabled state user-up } /Common/10.1.20.44:80 { address 10.1.20.44 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/LoraxWebServer_Pool { members replace-all-with { /Common/10.1.20.32:80 { address 10.1.20.32 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/ServerHTTP_Pool { members replace-all-with { /Common/10.1.20.252:80 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/ServerSSH_Pool { members replace-all-with { /Common/10.1.20.252:22 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/ServerVNC_Pool { members replace-all-with { /Common/10.1.20.252:5900 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { /Common/10.1.20.11:80 { address 10.1.20.11 session user-enabled state user-up } /Common/10.1.20.12:80 { address 10.1.20.12 session user-enabled state user-up } /Common/10.1.20.13:80 { address 10.1.20.13 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+
+
+
+╔═════════════════════════╗
+║ Optional: Default Route ║
+╚═════════════════════════╝
+
+tmsh modify net route default { pool /Common/InternetGateway_Pool }
+
+
+
 ╔═════════════════╗
 ║   TCP Profile   ║
 ╚═════════════════╝
 
+tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from f5-tcp-progressive }
+
+
+
 ╔══════════════════╗
 ║   HTTP Profile   ║
 ╚══════════════════╝
+
+
+
 
 ╔═══════════════════════════╗
 ║   TCP Analytics Profile   ║

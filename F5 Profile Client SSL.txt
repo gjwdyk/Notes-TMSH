@@ -23,10 +23,10 @@ tmsh create ltm profile client-ssl /Common/Client_TLS_Profile { allow-expired-cr
 
 Which then can be assigned to all available Virtual Servers (change the Virtual Server's Partition and Name) :
 
-tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS { profiles add { Client_TLS_Profile } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain { profiles add { Client_TLS_Profile } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS { profiles add { Client_TLS_Profile } }
-tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS { profiles add { Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/serviceMain { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
 
 
 

@@ -1,0 +1,232 @@
+
+
+
+╔═╦════════════════════════╦═╗
+║ ║                        ║ ║
+╠═╬════════════════════════╬═╣
+║ ║   F5 LTM Profile TCP   ║ ║
+╠═╬════════════════════════╬═╣
+║ ║                        ║ ║
+╚═╩════════════════════════╩═╝
+
+╔═══════════════════════════╗
+║ TMSH List LTM Profile TCP ║
+╚═══════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp /Tenant_Class/TCP_Profile
+ltm profile tcp /Tenant_Class/TCP_Profile {
+    app-service none
+    defaults-from f5-tcp-progressive
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp /Tenant_Class/TCP_Profile all-properties
+[api-status-warning] ltm/profile/tcp, properties : deprecated : hardware-syn-cookie
+ltm profile tcp /Tenant_Class/TCP_Profile {
+    abc enabled
+    ack-on-push enabled
+    app-service none
+    auto-proxy-buffer-size enabled
+    auto-receive-window-size enabled
+    auto-send-buffer-size enabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control woodside
+    defaults-from f5-tcp-progressive
+    deferred-accept disabled
+    delay-window-control disabled
+    delayed-acks enabled
+    description none
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-2-timeout 300
+    fin-wait-timeout 5
+    hardware-syn-cookie enabled
+    idle-timeout 300
+    init-cwnd 16
+    init-rwnd 16
+    ip-df-mode pmtu
+    ip-tos-to-client 0
+    ip-ttl-mode proxy
+    ip-ttl-v4 255
+    ip-ttl-v6 64
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    md5-signature-passphrase none
+    minimum-rto 1000
+    mptcp disabled
+    mptcp-csum disabled
+    mptcp-csum-verify disabled
+    mptcp-debug disabled
+    mptcp-fallback reset
+    mptcp-fastjoin disabled
+    mptcp-idle-timeout 300
+    mptcp-join-max 5
+    mptcp-makeafterbreak disabled
+    mptcp-nojoindssack disabled
+    mptcp-rtomax 5
+    mptcp-rxmitmin 1000
+    mptcp-subflowmax 6
+    mptcp-timeout 3600
+    nagle auto
+    partition Tenant_Class
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 262144
+    proxy-buffer-low 196608
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag auto
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 131072
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 262144
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    tcp-options none
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp TCP_Profile
+ltm profile tcp TCP_Profile {
+    app-service none
+    defaults-from f5-tcp-progressive
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile tcp TCP_Profile all-properties
+[api-status-warning] ltm/profile/tcp, properties : deprecated : hardware-syn-cookie
+ltm profile tcp TCP_Profile {
+    abc enabled
+    ack-on-push enabled
+    app-service none
+    auto-proxy-buffer-size enabled
+    auto-receive-window-size enabled
+    auto-send-buffer-size enabled
+    close-wait-timeout 5
+    cmetrics-cache enabled
+    cmetrics-cache-timeout 0
+    congestion-control woodside
+    defaults-from f5-tcp-progressive
+    deferred-accept disabled
+    delay-window-control disabled
+    delayed-acks enabled
+    description none
+    dsack disabled
+    early-retransmit enabled
+    ecn enabled
+    enhanced-loss-recovery enabled
+    fast-open enabled
+    fast-open-cookie-expiration 21600
+    fin-wait-2-timeout 300
+    fin-wait-timeout 5
+    hardware-syn-cookie enabled
+    idle-timeout 300
+    init-cwnd 16
+    init-rwnd 16
+    ip-df-mode pmtu
+    ip-tos-to-client 0
+    ip-ttl-mode proxy
+    ip-ttl-v4 255
+    ip-ttl-v6 64
+    keep-alive-interval 1800
+    limited-transmit enabled
+    link-qos-to-client 0
+    max-retrans 8
+    max-segment-size 1460
+    md5-signature disabled
+    md5-signature-passphrase none
+    minimum-rto 1000
+    mptcp disabled
+    mptcp-csum disabled
+    mptcp-csum-verify disabled
+    mptcp-debug disabled
+    mptcp-fallback reset
+    mptcp-fastjoin disabled
+    mptcp-idle-timeout 300
+    mptcp-join-max 5
+    mptcp-makeafterbreak disabled
+    mptcp-nojoindssack disabled
+    mptcp-rtomax 5
+    mptcp-rxmitmin 1000
+    mptcp-subflowmax 6
+    mptcp-timeout 3600
+    nagle auto
+    partition Common
+    pkt-loss-ignore-burst 0
+    pkt-loss-ignore-rate 0
+    proxy-buffer-high 262144
+    proxy-buffer-low 196608
+    proxy-mss enabled
+    proxy-options disabled
+    push-flag auto
+    rate-pace enabled
+    rate-pace-max-rate 0
+    receive-window-size 131072
+    reset-on-timeout enabled
+    rexmt-thresh 3
+    selective-acks enabled
+    selective-nack disabled
+    send-buffer-size 262144
+    slow-start enabled
+    syn-cookie-enable enabled
+    syn-cookie-whitelist disabled
+    syn-max-retrans 3
+    syn-rto-base 3000
+    tail-loss-probe enabled
+    tcp-options none
+    time-wait-recycle enabled
+    time-wait-timeout 2000
+    timestamps enabled
+    verified-accept disabled
+    zero-window-timeout 20000
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═════════════════════════════╗
+║ TMSH Create LTM Profile TCP ║
+╚═════════════════════════════╝
+
+tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from f5-tcp-progressive }
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+

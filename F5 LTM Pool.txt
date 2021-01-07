@@ -13,17 +13,43 @@
 ║   Common Generic Note   ║
 ╚═════════════════════════╝
 
+Pre-Requisites:
+
 tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
 tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
 tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
 tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
 
+tmsh create ltm node 10.1.10.1 { address 10.1.10.1 }
+tmsh create ltm node 10.1.20.11 { address 10.1.20.11 }
+tmsh create ltm node 10.1.20.12 { address 10.1.20.12 }
+tmsh create ltm node 10.1.20.13 { address 10.1.20.13 }
+tmsh create ltm node 10.1.20.17 { address 10.1.20.17 }
+tmsh create ltm node 10.1.20.20 { address 10.1.20.20 }
+tmsh create ltm node 10.1.20.32 { address 10.1.20.32 }
+tmsh create ltm node 10.1.20.41 { address 10.1.20.41 }
+tmsh create ltm node 10.1.20.42 { address 10.1.20.42 }
+tmsh create ltm node 10.1.20.43 { address 10.1.20.43 }
+tmsh create ltm node 10.1.20.44 { address 10.1.20.44 }
+tmsh create ltm node 10.1.20.251 { address 10.1.20.251 }
+tmsh create ltm node 10.1.20.252 { address 10.1.20.252 }
 
+Then create the Pools:
 
+tmsh create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/DVWA_Pool { members replace-all-with { /Common/10.1.20.17:80 { address 10.1.20.17 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/Hackazon_Pool { members replace-all-with { /Common/10.1.20.20:80 { address 10.1.20.20 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/InternetGateway_Pool { members replace-all-with { /Common/10.1.10.1:0 { address 10.1.10.1 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/ICMP_Gateway_8888_Monitor /Common/ICMP_Gateway_8844_Monitor } } 
+tmsh create ltm pool /Common/LoraxStaticWeb_Pool { members replace-all-with { /Common/10.1.20.41:80 { address 10.1.20.41 session user-enabled state user-up } /Common/10.1.20.42:80 { address 10.1.20.42 session user-enabled state user-up } /Common/10.1.20.43:80 { address 10.1.20.43 session user-enabled state user-up } /Common/10.1.20.44:80 { address 10.1.20.44 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/LoraxWebServer_Pool { members replace-all-with { /Common/10.1.20.32:80 { address 10.1.20.32 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/ServerHTTP_Pool { members replace-all-with { /Common/10.1.20.252:80 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/ServerSSH_Pool { members replace-all-with { /Common/10.1.20.252:22 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/ServerVNC_Pool { members replace-all-with { /Common/10.1.20.252:5900 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { /Common/10.1.20.11:80 { address 10.1.20.11 session user-enabled state user-up } /Common/10.1.20.12:80 { address 10.1.20.12 session user-enabled state user-up } /Common/10.1.20.13:80 { address 10.1.20.13 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
 
+Optionally, default route can be changed to use pool instead of a single gateway address:
 
-
-
+tmsh modify net route default { pool /Common/InternetGateway_Pool }
 
 
 
@@ -305,16 +331,16 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 ║ TMSH Create LTM Pool ║
 ╚══════════════════════╝
 
-create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
-create ltm pool /Common/DVWA_Pool { members replace-all-with { /Common/10.1.20.17:80 { address 10.1.20.17 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
-create ltm pool /Common/Hackazon_Pool { members replace-all-with { /Common/10.1.20.20:80 { address 10.1.20.20 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
-create ltm pool /Common/InternetGateway_Pool { members replace-all-with { /Common/10.1.10.1:0 { address 10.1.10.1 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/ICMP_Gateway_8888_Monitor /Common/ICMP_Gateway_8844_Monitor } } 
-create ltm pool /Common/LoraxStaticWeb_Pool { members replace-all-with { /Common/10.1.20.41:80 { address 10.1.20.41 session user-enabled state user-up } /Common/10.1.20.42:80 { address 10.1.20.42 session user-enabled state user-up } /Common/10.1.20.43:80 { address 10.1.20.43 session user-enabled state user-up } /Common/10.1.20.44:80 { address 10.1.20.44 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
-create ltm pool /Common/LoraxWebServer_Pool { members replace-all-with { /Common/10.1.20.32:80 { address 10.1.20.32 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
-create ltm pool /Common/ServerHTTP_Pool { members replace-all-with { /Common/10.1.20.252:80 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
-create ltm pool /Common/ServerSSH_Pool { members replace-all-with { /Common/10.1.20.252:22 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
-create ltm pool /Common/ServerVNC_Pool { members replace-all-with { /Common/10.1.20.252:5900 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
-create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { /Common/10.1.20.11:80 { address 10.1.20.11 session user-enabled state user-up } /Common/10.1.20.12:80 { address 10.1.20.12 session user-enabled state user-up } /Common/10.1.20.13:80 { address 10.1.20.13 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/DVWA_Pool { members replace-all-with { /Common/10.1.20.17:80 { address 10.1.20.17 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/Hackazon_Pool { members replace-all-with { /Common/10.1.20.20:80 { address 10.1.20.20 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/InternetGateway_Pool { members replace-all-with { /Common/10.1.10.1:0 { address 10.1.10.1 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/ICMP_Gateway_8888_Monitor /Common/ICMP_Gateway_8844_Monitor } } 
+tmsh create ltm pool /Common/LoraxStaticWeb_Pool { members replace-all-with { /Common/10.1.20.41:80 { address 10.1.20.41 session user-enabled state user-up } /Common/10.1.20.42:80 { address 10.1.20.42 session user-enabled state user-up } /Common/10.1.20.43:80 { address 10.1.20.43 session user-enabled state user-up } /Common/10.1.20.44:80 { address 10.1.20.44 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/LoraxWebServer_Pool { members replace-all-with { /Common/10.1.20.32:80 { address 10.1.20.32 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+tmsh create ltm pool /Common/ServerHTTP_Pool { members replace-all-with { /Common/10.1.20.252:80 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
+tmsh create ltm pool /Common/ServerSSH_Pool { members replace-all-with { /Common/10.1.20.252:22 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/ServerVNC_Pool { members replace-all-with { /Common/10.1.20.252:5900 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+tmsh create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { /Common/10.1.20.11:80 { address 10.1.20.11 session user-enabled state user-up } /Common/10.1.20.12:80 { address 10.1.20.12 session user-enabled state user-up } /Common/10.1.20.13:80 { address 10.1.20.13 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
 
 
 
