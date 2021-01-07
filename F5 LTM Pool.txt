@@ -13,19 +13,10 @@
 ║   Common Generic Note   ║
 ╚═════════════════════════╝
 
-
-
-
-
-
-
 tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
 tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
-
-
-
-/Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor
-/Tenant_Class/Application_Class/ICMP_Gateway_8844_Monitor
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
 
 
 
@@ -331,6 +322,264 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
 
+
+╔══════════════════════╗
+║ TMSH Create LTM Pool ║
+╚══════════════════════╝
+
+create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+
+create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/19.72.10.1:88  { address 19.72.10.1  session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
+
+
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/DVWA_Pool
+ltm pool /Tenant_Class/Application_Class/DVWA_Pool {
+    members {
+        /Tenant_Class/10.1.20.17:http {
+            address 10.1.20.17
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/Hackazon_Pool
+ltm pool /Tenant_Class/Application_Class/Hackazon_Pool {
+    members {
+        /Tenant_Class/10.1.20.20:http {
+            address 10.1.20.20
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/InternetGateway_Pool
+ltm pool /Tenant_Class/Application_Class/InternetGateway_Pool {
+    members {
+        /Tenant_Class/10.1.10.1:any {
+            address 10.1.10.1
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor /Tenant_Class/Application_Class/ICMP_Gateway_8844_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/LoraxStaticWeb_Pool
+ltm pool /Tenant_Class/Application_Class/LoraxStaticWeb_Pool {
+    members {
+        /Tenant_Class/10.1.20.41:http {
+            address 10.1.20.41
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+        /Tenant_Class/10.1.20.42:http {
+            address 10.1.20.42
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+        /Tenant_Class/10.1.20.43:http {
+            address 10.1.20.43
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+        /Tenant_Class/10.1.20.44:http {
+            address 10.1.20.44
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/LoraxWebServer_Pool
+ltm pool /Tenant_Class/Application_Class/LoraxWebServer_Pool {
+    members {
+        /Tenant_Class/10.1.20.32:http {
+            address 10.1.20.32
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/ServerHTTP_Pool
+ltm pool /Tenant_Class/Application_Class/ServerHTTP_Pool {
+    members {
+        /Tenant_Class/10.1.20.252:http {
+            address 10.1.20.252
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/ServerSSH_Pool
+ltm pool /Tenant_Class/Application_Class/ServerSSH_Pool {
+    members {
+        /Tenant_Class/10.1.20.252:ssh {
+            address 10.1.20.252
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/TCPHalfOpen_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/ServerVNC_Pool
+ltm pool /Tenant_Class/Application_Class/ServerVNC_Pool {
+    members {
+        /Tenant_Class/10.1.20.252:rfb {
+            address 10.1.20.252
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/TCPHalfOpen_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool /Tenant_Class/Application_Class/StaticWebServers_Pool
+ltm pool /Tenant_Class/Application_Class/StaticWebServers_Pool {
+    members {
+        /Tenant_Class/10.1.20.11:http {
+            address 10.1.20.11
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+        /Tenant_Class/10.1.20.12:http {
+            address 10.1.20.12
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+        /Tenant_Class/10.1.20.13:http {
+            address 10.1.20.13
+            session monitor-enabled
+            state up
+            metadata {
+                source {
+                    value declaration
+                }
+            }
+        }
+    }
+    min-active-members 1
+    monitor min 1 of { /Tenant_Class/Application_Class/HTTP_Monitor }
+    partition Tenant_Class
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
 

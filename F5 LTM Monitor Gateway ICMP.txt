@@ -1,0 +1,110 @@
+
+
+
+╔═╦═════════════════════════════════╦═╗
+║ ║                                 ║ ║
+╠═╬═════════════════════════════════╬═╣
+║ ║   F5 LTM Monitor Gateway ICMP   ║ ║
+╠═╬═════════════════════════════════╬═╣
+║ ║                                 ║ ║
+╚═╩═════════════════════════════════╩═╝
+
+╔════════════════════════════════════╗
+║ TMSH List LTM Monitor Gateway ICMP ║
+╚════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor gateway-icmp /Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor
+ltm monitor gateway-icmp /Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor {
+    adaptive disabled
+    adaptive-limit 1000
+    adaptive-sampling-timespan 180
+    defaults-from gateway_icmp
+    destination 8.8.8.8:*
+    interval 5
+    partition Tenant_Class
+    time-until-up 0
+    timeout 16
+    transparent enabled
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor gateway-icmp /Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor all-properties
+ltm monitor gateway-icmp /Tenant_Class/Application_Class/ICMP_Gateway_8888_Monitor {
+    adaptive disabled
+    adaptive-divergence-type relative
+    adaptive-divergence-value 25
+    adaptive-limit 1000
+    adaptive-sampling-timespan 180
+    app-service none
+    defaults-from gateway_icmp
+    description none
+    destination 8.8.8.8:*
+    interval 5
+    manual-resume disabled
+    partition Tenant_Class
+    time-until-up 0
+    timeout 16
+    transparent enabled
+    up-interval 0
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor gateway-icmp ICMP_Gateway_8888_Monitor
+ltm monitor gateway-icmp ICMP_Gateway_8888_Monitor {
+    adaptive disabled
+    defaults-from gateway_icmp
+    destination 8.8.8.8:*
+    interval 5
+    time-until-up 0
+    timeout 16
+    transparent enabled
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor gateway-icmp ICMP_Gateway_8888_Monitor all-properties
+ltm monitor gateway-icmp ICMP_Gateway_8888_Monitor {
+    adaptive disabled
+    adaptive-divergence-type relative
+    adaptive-divergence-value 25
+    adaptive-limit 200
+    adaptive-sampling-timespan 300
+    app-service none
+    defaults-from gateway_icmp
+    description none
+    destination 8.8.8.8:*
+    interval 5
+    manual-resume disabled
+    partition Common
+    time-until-up 0
+    timeout 16
+    transparent enabled
+    up-interval 0
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔════════════════════════════════════╗
+║ TMSH List LTM Monitor Gateway ICMP ║
+╚════════════════════════════════════╝
+
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+

@@ -30,6 +30,16 @@ tmsh create ltm node /Common/10.1.20.251 { address 10.1.20.251 }
 tmsh create ltm node /Common/10.1.20.252 { address 10.1.20.252 }
 
 
+╔══════════════╗
+║   Monitors   ║
+╚══════════════╝
+
+tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
+tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8888_Monitor { defaults-from gateway_icmp destination 8.8.8.8:* transparent enabled }
+tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { defaults-from gateway_icmp destination 8.8.4.4:* transparent enabled }
+
+
 
 ╔═══════════╗
 ║   Pools   ║
