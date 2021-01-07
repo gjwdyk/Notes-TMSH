@@ -1,0 +1,93 @@
+
+
+
+╔═╦══════════════════════════════════╦═╗
+║ ║                                  ║ ║
+╠═╬══════════════════════════════════╬═╣
+║ ║   F5 LTM Monitor TCP Half Open   ║ ║
+╠═╬══════════════════════════════════╬═╣
+║ ║                                  ║ ║
+╚═╩══════════════════════════════════╩═╝
+
+╔═════════════════════════════════════╗
+║ TMSH List LTM Monitor TCP Half Open ║
+╚═════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor tcp-half-open /Tenant_Class/Application_Class/TCPHalfOpen_Monitor
+ltm monitor tcp-half-open /Tenant_Class/Application_Class/TCPHalfOpen_Monitor {
+    defaults-from tcp_half_open
+    destination *:*
+    interval 5
+    partition Tenant_Class
+    time-until-up 0
+    timeout 16
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor tcp-half-open /Tenant_Class/Application_Class/TCPHalfOpen_Monitor all-properties
+ltm monitor tcp-half-open /Tenant_Class/Application_Class/TCPHalfOpen_Monitor {
+    app-service none
+    defaults-from tcp_half_open
+    description none
+    destination *:*
+    interval 5
+    manual-resume disabled
+    partition Tenant_Class
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor tcp-half-open TCPHalfOpen_Monitor
+ltm monitor tcp-half-open TCPHalfOpen_Monitor {
+    defaults-from tcp_half_open
+    destination *:*
+    interval 5
+    time-until-up 0
+    timeout 16
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor tcp-half-open TCPHalfOpen_Monitor all-properties
+ltm monitor tcp-half-open TCPHalfOpen_Monitor {
+    app-service none
+    defaults-from tcp_half_open
+    description none
+    destination *:*
+    interval 5
+    manual-resume disabled
+    partition Common
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═══════════════════════════════════════╗
+║ TMSH Create LTM Monitor TCP Half Open ║
+╚═══════════════════════════════════════╝
+
+tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+

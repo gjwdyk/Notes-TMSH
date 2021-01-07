@@ -1,0 +1,129 @@
+
+
+
+╔═╦═════════════════════════╦═╗
+║ ║                         ║ ║
+╠═╬═════════════════════════╬═╣
+║ ║   F5 LTM Monitor HTTP   ║ ║
+╠═╬═════════════════════════╬═╣
+║ ║                         ║ ║
+╚═╩═════════════════════════╩═╝
+
+╔════════════════════════════╗
+║ TMSH List LTM Monitor HTTP ║
+╚════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor http /Tenant_Class/Application_Class/HTTP_Monitor
+ltm monitor http /Tenant_Class/Application_Class/HTTP_Monitor {
+    adaptive disabled
+    adaptive-limit 1000
+    adaptive-sampling-timespan 180
+    defaults-from http
+    destination *:*
+    interval 5
+    ip-dscp 0
+    partition Tenant_Class
+    recv HTTP/1.
+    recv-disable none
+    send "HEAD / HTTP/1.0\r\n\r\n"
+    time-until-up 0
+    timeout 16
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor http /Tenant_Class/Application_Class/HTTP_Monitor all-properties
+ltm monitor http /Tenant_Class/Application_Class/HTTP_Monitor {
+    adaptive disabled
+    adaptive-divergence-type relative
+    adaptive-divergence-value 25
+    adaptive-limit 1000
+    adaptive-sampling-timespan 180
+    app-service none
+    defaults-from http
+    description none
+    destination *:*
+    interval 5
+    ip-dscp 0
+    manual-resume disabled
+    partition Tenant_Class
+    password none
+    recv HTTP/1.
+    recv-disable none
+    reverse disabled
+    send "HEAD / HTTP/1.0\r\n\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+    username none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor http HTTP_Monitor
+ltm monitor http HTTP_Monitor {
+    adaptive disabled
+    defaults-from http
+    destination *:*
+    interval 5
+    ip-dscp 0
+    recv HTTP/1.
+    recv-disable none
+    send "HEAD / HTTP/1.0\r\n\r\n"
+    time-until-up 0
+    timeout 16
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm monitor http HTTP_Monitor all-properties
+ltm monitor http HTTP_Monitor {
+    adaptive disabled
+    adaptive-divergence-type relative
+    adaptive-divergence-value 25
+    adaptive-limit 200
+    adaptive-sampling-timespan 300
+    app-service none
+    defaults-from http
+    description none
+    destination *:*
+    interval 5
+    ip-dscp 0
+    manual-resume disabled
+    partition Common
+    password none
+    recv HTTP/1.
+    recv-disable none
+    reverse disabled
+    send "HEAD / HTTP/1.0\r\n\r\n"
+    time-until-up 0
+    timeout 16
+    transparent disabled
+    up-interval 0
+    username none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔══════════════════════════════╗
+║ TMSH Create LTM Monitor HTTP ║
+╚══════════════════════════════╝
+
+tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+
