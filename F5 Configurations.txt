@@ -15,19 +15,19 @@ Networking (Interface, VLAN, Self-IP Address, Default Route) should be done duri
 ║   Nodes   ║
 ╚═══════════╝
 
-tmsh create ltm node 10.1.10.1 { address 10.1.10.1 }
-tmsh create ltm node 10.1.20.11 { address 10.1.20.11 }
-tmsh create ltm node 10.1.20.12 { address 10.1.20.12 }
-tmsh create ltm node 10.1.20.13 { address 10.1.20.13 }
-tmsh create ltm node 10.1.20.17 { address 10.1.20.17 }
-tmsh create ltm node 10.1.20.20 { address 10.1.20.20 }
-tmsh create ltm node 10.1.20.32 { address 10.1.20.32 }
-tmsh create ltm node 10.1.20.41 { address 10.1.20.41 }
-tmsh create ltm node 10.1.20.42 { address 10.1.20.42 }
-tmsh create ltm node 10.1.20.43 { address 10.1.20.43 }
-tmsh create ltm node 10.1.20.44 { address 10.1.20.44 }
-tmsh create ltm node 10.1.20.251 { address 10.1.20.251 }
-tmsh create ltm node 10.1.20.252 { address 10.1.20.252 }
+tmsh create ltm node /Common/10.1.10.1 { address 10.1.10.1 }
+tmsh create ltm node /Common/10.1.20.11 { address 10.1.20.11 }
+tmsh create ltm node /Common/10.1.20.12 { address 10.1.20.12 }
+tmsh create ltm node /Common/10.1.20.13 { address 10.1.20.13 }
+tmsh create ltm node /Common/10.1.20.17 { address 10.1.20.17 }
+tmsh create ltm node /Common/10.1.20.20 { address 10.1.20.20 }
+tmsh create ltm node /Common/10.1.20.32 { address 10.1.20.32 }
+tmsh create ltm node /Common/10.1.20.41 { address 10.1.20.41 }
+tmsh create ltm node /Common/10.1.20.42 { address 10.1.20.42 }
+tmsh create ltm node /Common/10.1.20.43 { address 10.1.20.43 }
+tmsh create ltm node /Common/10.1.20.44 { address 10.1.20.44 }
+tmsh create ltm node /Common/10.1.20.251 { address 10.1.20.251 }
+tmsh create ltm node /Common/10.1.20.252 { address 10.1.20.252 }
 
 
 
@@ -55,18 +55,35 @@ tmsh create ltm node 10.1.20.252 { address 10.1.20.252 }
 ║   TLS Client Side Profile   ║
 ╚═════════════════════════════╝
 
+tmsh install /sys crypto cert Imported-SSL-Certificate from-local-file /config/cloud/domain.name.rsa.crt
+tmsh install /sys crypto key Imported-SSL-Key from-local-file /config/cloud/domain.name.rsa.key
+tmsh create ltm profile client-ssl /Common/Client_TLS_Profile { allow-expired-crl disabled app-service none authenticate once c3d-drop-unknown-ocsp-status drop c3d-ocsp none ca-file none cert-key-chain replace-all-with { set0 { cert Imported-SSL-Certificate key Imported-SSL-Key } } cert-lookup-by-ipaddr-port disabled cipher-group none ciphers DEFAULT client-cert-ca none crl-file none description none ocsp-stapling disabled options { dont-insert-empty-fragments no-tlsv1.3 } peer-cert-mode ignore renegotiation enabled server-name none sni-default true sni-require false ssl-c3d disabled ssl-forward-proxy disabled ssl-forward-proxy-bypass disabled }
+
 
 
 ╔════════════════════════════╗
 ║   IP Intelligence Policy   ║
 ╚════════════════════════════╝
-
+tmsh create security ip-intelligence policy /Common/IP_Intelligence_Policy { blacklist-categories replace-all-with { additional { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } appiq_badactors { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } application_denial_of_service { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } attacked_ips { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } botnets { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } cloud_provider_networks { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } denial_of_service { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } infected_sources { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } mobile_threats { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } phishing { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } proxy { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } scanners { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } spam_sources { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } tor_proxy { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } web_attacks { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } windows_exploits { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } } default-log-blacklist-hit-only yes }
+tmsh modify security ip-intelligence global-policy { ip-intelligence-policy /Common/IP_Intelligence_Policy }
 
 
 
 ╔══════════════════════════╗
 ║   Security Log Profile   ║
 ╚══════════════════════════╝
+
+tmsh create sys log-config publisher /Common/Local_DataSafe { destinations replace-all-with { local-syslog { } } }
+tmsh create security log profile /Common/Log_ALL
+tmsh modify security log profile /Common/Log_ALL { antifraud replace-all-with { Log_ALL { events replace-all-with { alert { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${alert_type}\",\"${alert_comp}\",\"${alert_details}\",\"${alert_info_ex}\",\"${alert_score}\",\"${alert_origin}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } login { format { user-template "\"${event_name}\",\"${timestamp}\",\"${url}\",\"${username}\",\"${login_sts}\",\"${login_details}\",\"${login_affected}\",\"${client_ip}\",\"${dest_ip}\",\"${dest_port}\",\"${fingerprint}\",\"${user_agent}\",\"${geo}\",\"${bigip_mgmt_ip}\"" } } } rate-limit-template "\"${event_name}\",\"${timestamp}\",\"${vs_name}\",\"${sent}\",\"${dropped}\",\"${errors}\"" remote-publisher Local_DataSafe } } }
+tmsh modify security log profile /Common/Log_ALL { application replace-all-with { Log_ALL { filter replace-all-with { log-challenge-failure-requests { values replace-all-with { enabled } } request-type { values replace-all-with { all } } } guarantee-logging enabled guarantee-response-logging enabled response-logging all } } }
+tmsh modify security log profile /Common/Log_ALL { bot-defense replace-all-with { Log_ALL { filter { log-alarm enabled log-block enabled log-browser enabled log-browser-verification-action enabled log-captcha enabled log-challenge-failure-request enabled log-device-id-collection-request enabled log-honey-pot-page enabled log-malicious-bot enabled log-mobile-application enabled log-none enabled log-rate-limit enabled log-redirect-to-pool enabled log-suspicious-browser enabled log-tcp-reset enabled log-trusted-bot enabled log-unknown enabled log-untrusted-bot enabled } local-publisher local-db-publisher } } }
+tmsh modify security log profile /Common/Log_ALL { dos-application replace-all-with { Log_ALL { local-publisher local-db-publisher } } }
+tmsh modify security log profile /Common/Log_ALL { ip-intelligence { log-publisher local-db-publisher log-translation-fields enabled } }
+tmsh modify security log profile global-network { ip-intelligence { log-geo enabled log-shun enabled } }
+
+
+
 
 
 
@@ -85,14 +102,49 @@ APM Configuration (when applicable)
 
 
 
-Virtual Server
+
+
+╔═════════════════════╗
+║   Virtual Servers   ║
+╚═════════════════════╝
 
 
 
+--------- TLS Client Side Profile ---------
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/serviceMain { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
 
 
 
+--------- IP Intelligence Policy ---------
 
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/SSH_Service_TCP { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/serviceMain { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/serviceMain-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh modify ltm virtual /Common/VNC_Service_TCP { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+
+
+
+--------- Security Log Profile ---------
+
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/SSH_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/serviceMain { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/serviceMain-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh modify ltm virtual /Common/VNC_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
 
 
 
