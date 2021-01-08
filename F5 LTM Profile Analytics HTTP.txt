@@ -1,11 +1,17 @@
 
 
 
+╔═╦═══════════════════════════════════╦═╗
+║ ║                                   ║ ║
+╠═╬═══════════════════════════════════╬═╣
+║ ║   F5 LTM Profile Analytics HTTP   ║ ║
+╠═╬═══════════════════════════════════╬═╣
+║ ║                                   ║ ║
+╚═╩═══════════════════════════════════╩═╝
 
-
-
-
-
+╔══════════════════════════════════════╗
+║ TMSH List LTM Profile Analytics HTTP ║
+╚══════════════════════════════════════╝
 
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile
 ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
@@ -46,7 +52,9 @@ ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
     urls-for-stat-collection none
 }
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
-
+╔════════╗
+║   OR   ║
+╚════════╝
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile all-properties
 ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
     alerts none
@@ -137,21 +145,163 @@ ltm profile analytics /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
     urls-for-stat-collection none
 }
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile analytics HTTP_Analytics_Profile
+ltm profile analytics HTTP_Analytics_Profile {
+    app-service none
+    captured-traffic-external-logging disabled
+    captured-traffic-internal-logging enabled
+    collect-dest-ip-geo enabled
+    collect-geo enabled
+    collect-http-timing-metrics enabled
+    collect-ip enabled
+    collect-max-tps-and-throughput enabled
+    collect-methods enabled
+    collect-os-and-browser enabled
+    collect-page-load-time enabled
+    collect-response-codes enabled
+    collect-subnets enabled
+    collect-url enabled
+    collect-user-agent enabled
+    collect-user-sessions enabled
+    collected-stats-external-logging disabled
+    collected-stats-internal-logging enabled
+    countries-for-stat-collection none
+    defaults-from analytics
+    description "HTTP Analytics Profile Description"
+    external-logging-publisher none
+    ips-for-stat-collection none
+    notification-by-email disabled
+    notification-by-snmp disabled
+    notification-by-syslog disabled
+    notification-email-addresses none
+    publish-irule-statistics enabled
+    sampling enabled
+    session-cookie-security always-secure
+    session-timeout-minutes 10
+    smtp-config none
+    subnets-for-stat-collection none
+    traffic-capture {
+        HTTP_Analytics_Profile_Traffic_Capture {
+            request-captured-parts all
+            response-captured-parts all
+        }
+    }
+    urls-for-stat-collection none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+╔════════╗
+║   OR   ║
+╚════════╝
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile analytics HTTP_Analytics_Profile all-properties
+ltm profile analytics HTTP_Analytics_Profile {
+    alerts none
+    app-service none
+    captured-traffic-external-logging disabled
+    captured-traffic-internal-logging enabled
+    collect-dest-ip-geo enabled
+    collect-geo enabled
+    collect-http-timing-metrics enabled
+    collect-ip enabled
+    collect-max-tps-and-throughput enabled
+    collect-methods enabled
+    collect-os-and-browser enabled
+    collect-page-load-time enabled
+    collect-response-codes enabled
+    collect-subnets enabled
+    collect-url enabled
+    collect-user-agent enabled
+    collect-user-sessions enabled
+    collected-stats-external-logging disabled
+    collected-stats-internal-logging enabled
+    countries-for-stat-collection none
+    defaults-from analytics
+    description "HTTP Analytics Profile Description"
+    external-logging-publisher none
+    ips-for-stat-collection none
+    notification-by-email disabled
+    notification-by-snmp disabled
+    notification-by-syslog disabled
+    notification-email-addresses none
+    partition Common
+    publish-irule-statistics enabled
+    sampling enabled
+    session-cookie-security always-secure
+    session-timeout-minutes 10
+    smtp-config none
+    subnet-masks none
+    subnets-for-stat-collection none
+    traffic-capture {
+        HTTP_Analytics_Profile_Traffic_Capture {
+            app-service none
+            captured-protocols all
+            captured-ready-for-js-injection disabled
+            client-ips none
+            dos-activity any
+            max-application-response-time 0
+            max-application-response-time-valid disabled
+            max-client-ttfb 0
+            max-client-ttfb-valid disabled
+            max-clientside-network-latency 0
+            max-clientside-network-latency-valid disabled
+            max-request-duration 0
+            max-request-duration-valid disabled
+            max-request-size 0
+            max-request-size-valid disabled
+            max-response-duration 0
+            max-response-duration-valid disabled
+            max-response-size 0
+            max-response-size-valid disabled
+            max-server-latency 0
+            max-server-latency-valid disabled
+            max-serverside-network-latency 0
+            max-serverside-network-latency-valid disabled
+            methods none
+            min-application-response-time 0
+            min-client-ttfb 0
+            min-clientside-network-latency 0
+            min-request-duration 0
+            min-request-size 0
+            min-response-duration 0
+            min-response-size 0
+            min-server-latency 0
+            min-serverside-network-latency 0
+            request-captured-parts all
+            request-content-filter-search-part none
+            request-content-filter-search-string none
+            response-captured-parts all
+            response-codes none
+            response-content-filter-search-part none
+            response-content-filter-search-string none
+            url-filter-type all
+            url-path-prefixes none
+            user-agent-substrings none
+            node-addresses none
+            virtual-servers none
+        }
+    }
+    urls-for-stat-collection none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
 
+╔════════════════════════════════════════╗
+║ TMSH Create LTM Profile Analytics HTTP ║
+╚════════════════════════════════════════╝
+
+tmsh create ltm profile analytics /Common/HTTP_Analytics_Profile { alerts none app-service none captured-traffic-external-logging disabled captured-traffic-internal-logging enabled collect-dest-ip-geo enabled collect-geo enabled collect-http-timing-metrics enabled collect-ip enabled collect-max-tps-and-throughput enabled collect-methods enabled collect-os-and-browser enabled collect-page-load-time enabled collect-response-codes enabled collect-subnets enabled collect-url enabled collect-user-agent enabled collect-user-sessions enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled countries-for-stat-collection none defaults-from analytics description "HTTP Analytics Profile Description" external-logging-publisher none ips-for-stat-collection none notification-by-email disabled notification-by-snmp disabled notification-by-syslog disabled notification-email-addresses none publish-irule-statistics enabled sampling enabled session-cookie-security always-secure session-timeout-minutes 10 smtp-config none subnet-masks none subnets-for-stat-collection none traffic-capture replace-all-with { HTTP_Analytics_Profile_Traffic_Capture { app-service none captured-protocols all captured-ready-for-js-injection disabled client-ips none dos-activity any max-application-response-time 0 max-application-response-time-valid disabled max-client-ttfb 0 max-client-ttfb-valid disabled max-clientside-network-latency 0 max-clientside-network-latency-valid disabled max-request-duration 0 max-request-duration-valid disabled max-request-size 0 max-request-size-valid disabled max-response-duration 0 max-response-duration-valid disabled max-response-size 0 max-response-size-valid disabled max-server-latency 0 max-server-latency-valid disabled max-serverside-network-latency 0 max-serverside-network-latency-valid disabled methods none min-application-response-time 0 min-client-ttfb 0 min-clientside-network-latency 0 min-request-duration 0 min-request-size 0 min-response-duration 0 min-response-size 0 min-server-latency 0 min-serverside-network-latency 0 request-captured-parts all request-content-filter-search-part none request-content-filter-search-string none response-captured-parts all response-codes none response-content-filter-search-part none response-content-filter-search-string none url-filter-type all url-path-prefixes none user-agent-substrings none node-addresses none virtual-servers none } } urls-for-stat-collection none }
 
 
 
-
-
-
-
-
-
-
-
-
-
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
 
 
