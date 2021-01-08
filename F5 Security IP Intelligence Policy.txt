@@ -174,7 +174,7 @@ security ip-intelligence global-policy {
 
 
 ╔═══════════════════════════════════════════════╗
-║   TMSH Assign Global IP Intelligence Policy   ║
+║   TMSH Modify Global IP Intelligence Policy   ║
 ╚═══════════════════════════════════════════════╝
 
 tmsh modify security ip-intelligence global-policy { ip-intelligence-policy /Common/IP_Intelligence_Policy }
@@ -192,7 +192,7 @@ ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS {
 
 
 ╔═════════════════════════════════════════════════════════╗
-║   TMSH Assign Virtual Server's IP Intelligence Policy   ║
+║   TMSH Modify Virtual Server's IP Intelligence Policy   ║
 ╚═════════════════════════════════════════════════════════╝
 
 tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS { ip-intelligence-policy /Tenant_Class/IP_Intelligence_Policy }

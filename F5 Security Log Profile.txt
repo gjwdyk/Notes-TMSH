@@ -283,7 +283,7 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
 ╔════════════════════════════════════════════════════╗
-║ TMSH Assign Virtual Server's Security Log Profiles ║
+║ TMSH Modify Virtual Server's Security Log Profiles ║
 ╚════════════════════════════════════════════════════╝
 
 tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS { security-log-profiles replace-all-with { Log_ALL } }
