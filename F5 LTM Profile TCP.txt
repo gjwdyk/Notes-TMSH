@@ -221,6 +221,18 @@ tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from
 
 
 
+╔═══════════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Profiles ║
+╚═══════════════════════════════════════════╝
+
+Since the Virtual Server's Profiles contains a lot of profile-types, operand "replace-all-with" can not be used.
+i.e. replacing ALL other profile-types (e.g. replacing Client SSL profile and HTTP profile) with only TCP profile certainly won't work.
+To use operand "replace-all-with", one must have a set of all types of profiles the Virtual Server needs.
+
+Unfortunately L4 TCP Profile can not be deleted (defaulted to "tcp" profile when deleted) and/or added (duplicate profile error).
+
+
+
 ╔═╦═════════════════╦═╗
 ║ ║                 ║ ║
 ╠═╬═════════════════╬═╣

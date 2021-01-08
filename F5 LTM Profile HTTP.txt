@@ -185,6 +185,46 @@ tmsh create ltm profile http /Common/HTTP_Profile { app-service none defaults-fr
 
 
 
+╔═══════════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Profiles ║
+╚═══════════════════════════════════════════╝
+
+Since the Virtual Server's Profiles contains a lot of profile-types, operand "replace-all-with" can not be used.
+i.e. replacing ALL other profile-types (e.g. replacing TCP profile and HTTP profile) with only Client SSL profile certainly won't work.
+To use operand "replace-all-with", one must have a set of all types of profiles the Virtual Server needs.
+
+TMSH command for adding Client SSL profile into the Virtual Server
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { Client_TLS_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { /Tenant_Class/Application_Class/Client_TLS_Profile }
+
+The command may not work, if there is already a profile of the same type (i.e. there is already a Client SSL profile on the corresponding Virtual Server).
+If that's the case, the currently attached Client SSL profile must be removed first from the corresponding Virtual Server.
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { ServiceHTTPS_TLSServer }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { /Tenant_Class/Application_Class/ServiceHTTPS_TLSServer }
+
+
+
+/Tenant_Class/Application_Class/DVWA_Service_HTTPS
+/Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/Hackazon_Service_HTTPS
+/Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/SSH_Service_TCP
+/Tenant_Class/Application_Class/StaticWeb_Service_HTTPS
+/Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/VNC_Service_TCP
+/Tenant_Class/Application_Class/serviceMain
+/Tenant_Class/Application_Class/serviceMain-Redirect-
+
+
+
 ╔═╦═════════════════╦═╗
 ║ ║                 ║ ║
 ╠═╬═════════════════╬═╣

@@ -51,6 +51,19 @@ Optionally, default route can be changed to use pool instead of a single gateway
 
 tmsh modify net route default { pool /Common/InternetGateway_Pool }
 
+Then the Pools can be assigned to Virtual Servers:
+
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS pool /Common/DVWA_Pool
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS pool /Common/Hackazon_Pool
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/SSH_Service_TCP pool /Common/ServerSSH_Pool
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS pool /Common/StaticWebServers_Pool
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/VNC_Service_TCP pool /Common/ServerVNC_Pool
+tmsh modify ltm virtual /Common/serviceMain pool /Common/ServerHTTP_Pool
+tmsh modify ltm virtual /Common/serviceMain-Redirect- pool none
+
 
 
 ╔════════════════════╗
@@ -341,6 +354,120 @@ tmsh create ltm pool /Common/ServerHTTP_Pool { members replace-all-with { /Commo
 tmsh create ltm pool /Common/ServerSSH_Pool { members replace-all-with { /Common/10.1.20.252:22 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
 tmsh create ltm pool /Common/ServerVNC_Pool { members replace-all-with { /Common/10.1.20.252:5900 { address 10.1.20.252 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
 tmsh create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { /Common/10.1.20.11:80 { address 10.1.20.11 session user-enabled state user-up } /Common/10.1.20.12:80 { address 10.1.20.12 session user-enabled state user-up } /Common/10.1.20.13:80 { address 10.1.20.13 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } } 
+
+
+
+╔═════════════════════════════════════╗
+║ TMSH List LTM Virtual Server's Pool ║
+╚═════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS pool
+ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS {
+    pool /Tenant_Class/Application_Class/DVWA_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect- pool
+ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect- {
+    pool none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS pool
+ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS {
+    pool /Tenant_Class/Application_Class/Hackazon_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect- pool
+ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect- {
+    pool none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/SSH_Service_TCP pool
+ltm virtual /Tenant_Class/Application_Class/SSH_Service_TCP {
+    pool /Tenant_Class/Application_Class/ServerSSH_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS pool
+ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS {
+    pool /Tenant_Class/Application_Class/StaticWebServers_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect- pool
+ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect- {
+    pool none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/VNC_Service_TCP pool
+ltm virtual /Tenant_Class/Application_Class/VNC_Service_TCP {
+    pool /Tenant_Class/Application_Class/ServerVNC_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/serviceMain pool
+ltm virtual /Tenant_Class/Application_Class/serviceMain {
+    pool /Tenant_Class/Application_Class/ServerHTTP_Pool
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/serviceMain-Redirect- pool
+ltm virtual /Tenant_Class/Application_Class/serviceMain-Redirect- {
+    pool none
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═══════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Pool ║
+╚═══════════════════════════════════════╝
+
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS pool /Common/DVWA_Pool
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS pool /Common/Hackazon_Pool
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/SSH_Service_TCP pool /Common/ServerSSH_Pool
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS pool /Common/StaticWebServers_Pool
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Common/VNC_Service_TCP pool /Common/ServerVNC_Pool
+tmsh modify ltm virtual /Common/serviceMain pool /Common/ServerHTTP_Pool
+tmsh modify ltm virtual /Common/serviceMain-Redirect- pool none
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS pool /Tenant_Class/Application_Class/DVWA_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS pool /Tenant_Class/Application_Class/Hackazon_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Tenant_Class/Application_Class/SSH_Service_TCP pool /Tenant_Class/Application_Class/ServerSSH_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS pool /Tenant_Class/Application_Class/StaticWebServers_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect- pool none
+tmsh modify ltm virtual /Tenant_Class/Application_Class/VNC_Service_TCP pool /Tenant_Class/Application_Class/ServerVNC_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain pool /Tenant_Class/Application_Class/ServerHTTP_Pool
+tmsh modify ltm virtual /Tenant_Class/Application_Class/serviceMain-Redirect- pool none
 
 
 
