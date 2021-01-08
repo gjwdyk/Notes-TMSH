@@ -9,6 +9,29 @@
 ║ ║                                  ║ ║
 ╚═╩══════════════════════════════════╩═╝
 
+╔═════════════════════════╗
+║   Common Generic Note   ║
+╚═════════════════════════╝
+
+Create the TCP Analytics Profile:
+
+tmsh create ltm profile tcp-analytics /Common/TCP_Analytics_Profile { app-service none collect-city enabled collect-continent enabled collect-country enabled collect-nexthop enabled collect-post-code enabled collect-region enabled collect-remote-host-ip enabled collect-remote-host-subnet enabled collected-by-client-side enabled collected-by-server-side enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled defaults-from tcp-analytics description "TCP Analytics Profile Description" external-logging-publisher none }
+
+Assign it to applicable Virtual Servers:
+
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/SSH_Service_TCP profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/VNC_Service_TCP profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/serviceMain profiles add { /Common/TCP_Analytics_Profile }
+tmsh modify ltm virtual /Common/serviceMain-Redirect- profiles add { /Common/TCP_Analytics_Profile }
+
+
+
 ╔═════════════════════════════════════╗
 ║ TMSH List LTM Profile Analytics TCP ║
 ╚═════════════════════════════════════╝
@@ -111,6 +134,61 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 ╚═══════════════════════════════════════╝
 
 tmsh create ltm profile tcp-analytics /Common/TCP_Analytics_Profile { app-service none collect-city enabled collect-continent enabled collect-country enabled collect-nexthop enabled collect-post-code enabled collect-region enabled collect-remote-host-ip enabled collect-remote-host-subnet enabled collected-by-client-side enabled collected-by-server-side enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled defaults-from tcp-analytics description "TCP Analytics Profile Description" external-logging-publisher none }
+
+
+
+╔═════════════════════════════════════════╗
+║ TMSH List LTM Virtual Server's Profiles ║
+╚═════════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles
+ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS {
+    profiles {
+        /Tenant_Class/Application_Class/Client_TLS_Profile {
+            context clientside
+        }
+        /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
+            context all
+        }
+        /Tenant_Class/Application_Class/TCP_Analytics_Profile {
+            context all
+        }
+        f5-tcp-progressive {
+            context all
+        }
+        http {
+            context all
+        }
+    }
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═══════════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Profiles ║
+╚═══════════════════════════════════════════╝
+
+Since the Virtual Server's Profiles contains a lot of profile-types, operand "replace-all-with" can not be used.
+i.e. replacing ALL other profile-types (e.g. replacing TCP profile and HTTP profile) with only TCP Analytics profile certainly won't work.
+To use operand "replace-all-with", one must have a set of all types of profiles the Virtual Server needs.
+
+TMSH command for adding TCP Analytics profile into the Virtual Server
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { TCP_Analytics_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { /Tenant_Class/Application_Class/TCP_Analytics_Profile }
+
+The command may not work, if there is already a profile of the same type (i.e. there is already a TCP Analytics profile on the corresponding Virtual Server).
+If that's the case, the currently attached TCP Analytics profile must be removed first from the corresponding Virtual Server.
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { TCP_Analytics_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { /Tenant_Class/Application_Class/TCP_Analytics_Profile }
 
 
 

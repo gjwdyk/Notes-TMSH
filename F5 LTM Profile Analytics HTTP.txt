@@ -9,6 +9,25 @@
 ║ ║                                   ║ ║
 ╚═╩═══════════════════════════════════╩═╝
 
+╔═════════════════════════╗
+║   Common Generic Note   ║
+╚═════════════════════════╝
+
+
+
+/Tenant_Class/Application_Class/DVWA_Service_HTTPS
+/Tenant_Class/Application_Class/DVWA_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/Hackazon_Service_HTTPS
+/Tenant_Class/Application_Class/Hackazon_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/SSH_Service_TCP
+/Tenant_Class/Application_Class/StaticWeb_Service_HTTPS
+/Tenant_Class/Application_Class/StaticWeb_Service_HTTPS-Redirect-
+/Tenant_Class/Application_Class/VNC_Service_TCP
+/Tenant_Class/Application_Class/serviceMain
+/Tenant_Class/Application_Class/serviceMain-Redirect-
+
+
+
 ╔══════════════════════════════════════╗
 ║ TMSH List LTM Profile Analytics HTTP ║
 ╚══════════════════════════════════════╝
@@ -293,6 +312,61 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 ╚════════════════════════════════════════╝
 
 tmsh create ltm profile analytics /Common/HTTP_Analytics_Profile { alerts none app-service none captured-traffic-external-logging disabled captured-traffic-internal-logging enabled collect-dest-ip-geo enabled collect-geo enabled collect-http-timing-metrics enabled collect-ip enabled collect-max-tps-and-throughput enabled collect-methods enabled collect-os-and-browser enabled collect-page-load-time enabled collect-response-codes enabled collect-subnets enabled collect-url enabled collect-user-agent enabled collect-user-sessions enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled countries-for-stat-collection none defaults-from analytics description "HTTP Analytics Profile Description" external-logging-publisher none ips-for-stat-collection none notification-by-email disabled notification-by-snmp disabled notification-by-syslog disabled notification-email-addresses none publish-irule-statistics enabled sampling enabled session-cookie-security always-secure session-timeout-minutes 10 smtp-config none subnet-masks none subnets-for-stat-collection none traffic-capture replace-all-with { HTTP_Analytics_Profile_Traffic_Capture { app-service none captured-protocols all captured-ready-for-js-injection disabled client-ips none dos-activity any max-application-response-time 0 max-application-response-time-valid disabled max-client-ttfb 0 max-client-ttfb-valid disabled max-clientside-network-latency 0 max-clientside-network-latency-valid disabled max-request-duration 0 max-request-duration-valid disabled max-request-size 0 max-request-size-valid disabled max-response-duration 0 max-response-duration-valid disabled max-response-size 0 max-response-size-valid disabled max-server-latency 0 max-server-latency-valid disabled max-serverside-network-latency 0 max-serverside-network-latency-valid disabled methods none min-application-response-time 0 min-client-ttfb 0 min-clientside-network-latency 0 min-request-duration 0 min-request-size 0 min-response-duration 0 min-response-size 0 min-server-latency 0 min-serverside-network-latency 0 request-captured-parts all request-content-filter-search-part none request-content-filter-search-string none response-captured-parts all response-codes none response-content-filter-search-part none response-content-filter-search-string none url-filter-type all url-path-prefixes none user-agent-substrings none node-addresses none virtual-servers none } } urls-for-stat-collection none }
+
+
+
+╔═════════════════════════════════════════╗
+║ TMSH List LTM Virtual Server's Profiles ║
+╚═════════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles
+ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS {
+    profiles {
+        /Tenant_Class/Application_Class/Client_TLS_Profile {
+            context clientside
+        }
+        /Tenant_Class/Application_Class/HTTP_Analytics_Profile {
+            context all
+        }
+        /Tenant_Class/Application_Class/TCP_Analytics_Profile {
+            context all
+        }
+        f5-tcp-progressive {
+            context all
+        }
+        http {
+            context all
+        }
+    }
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═══════════════════════════════════════════╗
+║ TMSH Modify LTM Virtual Server's Profiles ║
+╚═══════════════════════════════════════════╝
+
+Since the Virtual Server's Profiles contains a lot of profile-types, operand "replace-all-with" can not be used.
+i.e. replacing ALL other profile-types (e.g. replacing TCP profile and HTTP profile) with only HTTP Analytics profile certainly won't work.
+To use operand "replace-all-with", one must have a set of all types of profiles the Virtual Server needs.
+
+TMSH command for adding HTTP Analytics profile into the Virtual Server
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { HTTP_Analytics_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles add { /Tenant_Class/Application_Class/HTTP_Analytics_Profile }
+
+The command may not work, if there is already a profile of the same type (i.e. there is already a HTTP Analytics profile on the corresponding Virtual Server).
+If that's the case, the currently attached HTTP Analytics profile must be removed first from the corresponding Virtual Server.
+
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { HTTP_Analytics_Profile }
+╔════════╗
+║   OR   ║
+╚════════╝
+tmsh modify ltm virtual /Tenant_Class/Application_Class/DVWA_Service_HTTPS profiles delete { /Tenant_Class/Application_Class/HTTP_Analytics_Profile }
 
 
 
