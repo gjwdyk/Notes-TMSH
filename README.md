@@ -23,7 +23,7 @@ License needed of type : F5-BIG-VE-LAB-V18-LIC (or equivalent).
 
 Module(s) to be provisioned : LTM, AVR, ASM, FPS, AFM ( `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal` ). Provisionable modules are: afm, am, apm, asm, avr, cgnat, dos, fps, gtm, ilx, lc, ltm, pem, sslo, swg, urldb .
 
-After the CloudFormation finished AND the Big-IP on-boarding process (Configure Network, License and Provision) finished; login to Big-IP SSH CLI and execute the scripts.
+After the CloudFormation finished AND the Big-IP on-boarding process (Configure Network, License and Provision) finished; login to Big-IP SSH CLI and execute the scripts in [F5 Configurations.txt](F5 Configurations.txt) line by line.
 
 
 
