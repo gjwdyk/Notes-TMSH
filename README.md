@@ -5,9 +5,9 @@
 
 
 This repository refers to the [CloudFormation-Big-IP-LAMPv7](https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7) repository with the diagram as below:
-<a href="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7">![Network Diagram](https://raw.githubusercontent.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/master/Figures/LogicalNetworkDiagramWindows.png)</a>
+![Network Diagram](https://raw.githubusercontent.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/master/Figures/LogicalNetworkDiagramWindows.png)
 
-The AS3 (F5 Application Services 3 Extension) builds configurations within specific partition (other than the default /Common/ partition).
+The AS3 (F5 Application Services 3 Extension) builds configurations within specific partition (other than the default `/Common/` partition).
 However F5 new features such as Device ID+ is currently NOT compatible with partition configurations.
 Furthermore AS3's capabilities in configuring F5 unit is still limited to fairly basic components only.
 
