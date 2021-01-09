@@ -1,7 +1,9 @@
 # TMSH-Notes
 
 
+
 ***
+
 
 
 This repository refers to the [CloudFormation-Big-IP-LAMPv7](https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7) repository with the diagram as below:
@@ -25,23 +27,16 @@ After the CloudFormation finished AND the Big-IP on-boarding process (Configure 
 
 
 
-
-<a href="https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=BigIP-LAMP-Win&templateURL=https://aws-f5-singapore-hc-demo-bucket-files.s3-ap-southeast-1.amazonaws.com/CF/CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_Original.json"><img align="right" src="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/raw/master/Figures/LaunchStackJigokuShoujo.png" width="140" height="22"/></a>
-<a href="https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=BigIP-LAMP-Win&templateURL=https://aws-f5-singapore-hc-demo-bucket-files.s3-ap-southeast-1.amazonaws.com/CF/CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn.json"><img src="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/raw/master/Figures/JigokuShoujoLaunchStack.png" width="140" height="22"/></a>
-
-
-
 ***
+
 
 
 To Do:
 
-- [ ] Update existing AS3 with Pools from Windows Server ??? (should we do this or not?)
-- [ ] Update Previous CF templates to use No OutBound versions of AS3 (and Update the corresponding Documentations)
-- [ ] tmsh modify sys db ui.statistics.modulestatistics.localtraffic.persistencerecords value true
-- [ ] Test Concept of Floating IP for High Availability. If 2 interfaces assigned same IP Address, will they be conflict? If not assigned, will they work?
-- [ ] Default ASM Profiles
-- [ ] APM (when applicable)
+- [ ] Device ID Configuration
+- [ ] DDoS Configuration
+- [ ] ASM Configuration (when possible)
+- [ ] APM Configuration (when possible)
 
 
 
