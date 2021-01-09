@@ -37,6 +37,7 @@ To Do:
 - [ ] DDoS Configuration
 - [ ] ASM Configuration (when possible)
 - [ ] APM Configuration (when possible)
+- [ ] Translate to Ansible
 
 
 
