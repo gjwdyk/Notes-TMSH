@@ -1,13 +1,19 @@
 
 
 
+╔════════════════════╗
+║   PRE Requisites   ║
+╚════════════════════╝
 
+The following to be completed before running the TMSH scripts below:
 
-
-
-
-
-Networking (Interface, VLAN, Self-IP Address, Default Route) should be done during on-boarding, otherwise Unit can not be licensed.
+֍ Interface
+֍ VLAN
+֍ Self IP Address
+֍ Default Route
+֍ License and Provisioning
+֍ NTP
+֍ DNS
 
 
 
@@ -132,87 +138,43 @@ tmsh modify security log profile global-network { ip-intelligence { log-geo enab
 
 
 
-
-
-
-
-
-
-
-
-Device ID configuration (when applicable)
-
-DDoS Configuration (when applicable)
-
-ASM Configuration (when applicable)
-
-APM Configuration (when applicable)
-
-
-
-
-
 ╔═════════════════════╗
 ║   Virtual Servers   ║
 ╚═════════════════════╝
 
-
-
---------- TLS Client Side Profile ---------
-tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
-tmsh modify ltm virtual /Common/serviceMain { profiles add { /Common/Client_TLS_Profile } }
-tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
-tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { profiles add { /Common/Client_TLS_Profile } }
-
-
-
---------- IP Intelligence Policy ---------
-
-tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/SSH_Service_TCP { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/serviceMain { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/serviceMain-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { ip-intelligence-policy /Common/IP_Intelligence_Policy }
-tmsh modify ltm virtual /Common/VNC_Service_TCP { ip-intelligence-policy /Common/IP_Intelligence_Policy }
+tmsh create ltm virtual /Common/DVWA_Service_HTTPS { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "DVWA Service on HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.242:443 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/Client_TLS_Profile { context clientside } /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/DVWA_Pool persist replace-all-with { cookie { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "DVWA Service on HTTP Redirect To HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.242:80 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/DVWA_Pool persist replace-all-with { cookie { default yes } } rules replace-all-with { _sys_https_redirect } ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/Hackazon_Service_HTTPS { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "Hackazon Service on HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.243:443 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/Client_TLS_Profile { context clientside } /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/Hackazon_Pool persist replace-all-with { cookie { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "Hackazon Service on HTTP Redirect To HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.243:80 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/Hackazon_Pool persist replace-all-with { cookie { default yes } } rules replace-all-with { _sys_https_redirect } ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/SSH_Service_TCP { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "CLI Service on SSH" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.241:22 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/TCP_Analytics_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/ServerSSH_Pool persist replace-all-with { source_addr { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/StaticWeb_Service_HTTPS { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "Static Web Service on HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.240:443 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/Client_TLS_Profile { context clientside } /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/StaticWebServers_Pool persist none rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "Static Web Service on HTTP Redirect To HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.240:80 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/StaticWebServers_Pool persist none rules replace-all-with { _sys_https_redirect } ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/VNC_Service_TCP { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none transparent-nexthop none urldb-feed-policy none description "Remote Administration Service on VNC" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.241:5900 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve translate-address enabled translate-port enabled ip-protocol tcp profiles replace-all-with { /Common/TCP_Analytics_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/ServerVNC_Pool persist replace-all-with { source_addr { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
+tmsh create ltm virtual /Common/serviceMain { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "Web Server on HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.241:443 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/Client_TLS_Profile { context clientside } /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/ServerHTTP_Pool persist replace-all-with { cookie { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } } 
+tmsh create ltm virtual /Common/serviceMain-Redirect- { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "Web Server on HTTP Redirect To HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.241:80 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/ServerHTTP_Pool persist replace-all-with { cookie { default yes } } rules replace-all-with { _sys_https_redirect } ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
 
 
 
---------- Security Log Profile ---------
+╔═══════════╗
+║   To Do   ║
+╚═══════════╝
 
-tmsh modify ltm virtual /Common/DVWA_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/SSH_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/serviceMain { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/serviceMain-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- { security-log-profiles replace-all-with { /Common/Log_ALL } }
-tmsh modify ltm virtual /Common/VNC_Service_TCP { security-log-profiles replace-all-with { /Common/Log_ALL } }
+֍ Device ID Configuration
 
+֍ DDoS Configuration
+
+֍ ASM Configuration (when possible)
+
+֍ APM Configuration (when possible)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
 
 
