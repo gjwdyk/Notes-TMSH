@@ -27,17 +27,25 @@
 ╚════════╝
 
 
-
+╔══════════════════════════════════════════════╗
+║ TMSH List Security DoS IP Uncommon Protolist ║
+╚══════════════════════════════════════════════╝
 
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list security dos ip-uncommon-protolist all-properties
 security dos ip-uncommon-protolist ip-uncommon-protolist {
     description "Default IP uncommon protocol list"
-    entries { hopopt igmp ggp ipv4 st cbt egp igp bbn-rcc nvp pup argus emcon xnet chaos mux dcn hmp prm xns-idp trunk-1 trunk-2 leaf-1 leaf-2 rdp irtp iso-tp4 netblt mfe-nsp merit-inp dccp 3pc idpr xtp ddp idpr-cmtp tp++ il ipv6 sdrp ipv6-route ipv6-frag idrp rsvp gre dsr bna esp ah i-nlsp swipe narp mobile tlsp skip ipv6-nonxt ipv6-opts 61 cftp 63 sat-expak kryptolan rvd ippc 68 sat-mon visa ipcv cpnx cphb wsn pvp br-sat-mon sun-nd wb-mon wb-expak iso-ip vmtp secure-vmtp vines ttp nsfnet-igp dgp tcf eigrp ospf sprite-rpc larp mtp ax.25 ipip micp scc-sp etherip encap 99 gmtp ifmp pnni pim aris scps qnx a/n ipcomp snp compaq-peer ipx-in-ip vrrp pgm 114 l2tp ddx iatp stp srp uti smp sm ptp isis fire crtp crdup sscopmce iplt sps pipe fc rsvp-e2e-ignore mobility-header udplite mpls-in-ip manet hip shim6 wesp rohc 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 }
+    entries { igmp ggp ipv4 st cbt egp igp bbn-rcc nvp pup argus emcon xnet chaos mux dcn hmp prm xns-idp trunk-1 trunk-2 leaf-1 leaf-2 rdp irtp iso-tp4 netblt mfe-nsp merit-inp dccp 3pc idpr xtp ddp idpr-cmtp tp++ il ipv6 sdrp ipv6-route ipv6-frag idrp rsvp gre dsr bna esp ah i-nlsp swipe narp mobile tlsp skip ipv6-nonxt ipv6-opts 61 cftp 63 sat-expak kryptolan rvd ippc 68 sat-mon visa ipcv cpnx cphb wsn pvp br-sat-mon sun-nd wb-mon wb-expak iso-ip vmtp secure-vmtp vines ttp nsfnet-igp dgp tcf eigrp ospf sprite-rpc larp mtp ax.25 ipip micp scc-sp etherip encap 99 gmtp ifmp pnni pim aris scps qnx a/n ipcomp snp compaq-peer ipx-in-ip vrrp pgm 114 l2tp ddx iatp stp srp uti smp sm ptp isis fire crtp crdup sscopmce iplt sps pipe fc rsvp-e2e-ignore udplite mpls-in-ip manet hip shim6 wesp 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 icmp ipv6-icmp sctp tcp udp mobility-header rohc }
     partition Common
 }
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 
 
+
+╔════════════════════════════════════════════════╗
+║ TMSH Modify Security DoS IP Uncommon Protolist ║
+╚════════════════════════════════════════════════╝
+
+tmsh modify security dos ip-uncommon-protolist ip-uncommon-protolist { description "Default IP Uncommon Protocol List" entries replace-all-with { igmp ggp ipv4 st cbt egp igp bbn-rcc nvp pup argus emcon xnet chaos mux dcn hmp prm xns-idp trunk-1 trunk-2 leaf-1 leaf-2 rdp irtp iso-tp4 netblt mfe-nsp merit-inp dccp 3pc idpr xtp ddp idpr-cmtp tp++ il ipv6 sdrp ipv6-route ipv6-frag idrp rsvp gre dsr bna esp ah i-nlsp swipe narp mobile tlsp skip ipv6-nonxt ipv6-opts 61 cftp 63 sat-expak kryptolan rvd ippc 68 sat-mon visa ipcv cpnx cphb wsn pvp br-sat-mon sun-nd wb-mon wb-expak iso-ip vmtp secure-vmtp vines ttp nsfnet-igp dgp tcf eigrp ospf sprite-rpc larp mtp ax.25 ipip micp scc-sp etherip encap 99 gmtp ifmp pnni pim aris scps qnx a/n ipcomp snp compaq-peer ipx-in-ip vrrp pgm 114 l2tp ddx iatp stp srp uti smp sm ptp isis fire crtp crdup sscopmce iplt sps pipe fc rsvp-e2e-ignore udplite mpls-in-ip manet hip shim6 wesp 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 icmp ipv6-icmp sctp tcp udp mobility-header rohc } }
 
 
 
