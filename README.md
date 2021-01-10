@@ -34,7 +34,7 @@ After the CloudFormation finished AND the Big-IP on-boarding process (Configure 
 To Do:
 
 - [ ] Device ID Configuration
-- [ ] DDoS Configuration
+- [ ] DDoS Configuration (for Virtual Servers)
 - [ ] ASM Configuration (when possible)
 - [ ] APM Configuration (when possible)
 - [ ] Translate to Ansible
