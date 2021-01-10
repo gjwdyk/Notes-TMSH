@@ -1,25 +1,26 @@
+#!/bin/bash
 
 
 
-╔════════════════════╗
-║   PRE Requisites   ║
-╚════════════════════╝
+#╔════════════════════╗
+#║   PRE Requisites   ║
+#╚════════════════════╝
+#
+#The following to be completed before running the TMSH scripts below:
+#
+#֍ Interface
+#֍ VLAN
+#֍ Self IP Address
+#֍ Default Route
+#֍ License and Provisioning
+#֍ NTP
+#֍ DNS
 
-The following to be completed before running the TMSH scripts below:
-
-֍ Interface
-֍ VLAN
-֍ Self IP Address
-֍ Default Route
-֍ License and Provisioning
-֍ NTP
-֍ DNS
 
 
-
-╔══════════════╗
-║   Monitors   ║
-╚══════════════╝
+#╔══════════════╗
+#║   Monitors   ║
+#╚══════════════╝
 
 tmsh create ltm monitor tcp-half-open /Common/TCPHalfOpen_Monitor { defaults-from tcp_half_open }
 tmsh create ltm monitor http /Common/HTTP_Monitor { defaults-from http recv "HTTP/1." send "HEAD / HTTP/1.0\r\n\r\n" }
@@ -28,9 +29,9 @@ tmsh create ltm monitor gateway-icmp /Common/ICMP_Gateway_8844_Monitor { default
 
 
 
-╔═══════════╗
-║   Nodes   ║
-╚═══════════╝
+#╔═══════════╗
+#║   Nodes   ║
+#╚═══════════╝
 
 tmsh create ltm node /Common/10.1.10.1 { address 10.1.10.1 }
 tmsh create ltm node /Common/10.1.20.11 { address 10.1.20.11 }
@@ -48,9 +49,9 @@ tmsh create ltm node /Common/10.1.20.252 { address 10.1.20.252 }
 
 
 
-╔═══════════╗
-║   Pools   ║
-╚═══════════╝
+#╔═══════════╗
+#║   Pools   ║
+#╚═══════════╝
 
 tmsh create ltm pool /Common/ActiveDirectory_Pool { members replace-all-with { /Common/10.1.20.251:88 { address 10.1.20.251 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/TCPHalfOpen_Monitor } }
 tmsh create ltm pool /Common/DVWA_Pool { members replace-all-with { /Common/10.1.20.17:80 { address 10.1.20.17 session user-enabled state user-up } } min-active-members 1 monitor min 1 of { /Common/HTTP_Monitor } }
@@ -65,49 +66,49 @@ tmsh create ltm pool /Common/StaticWebServers_Pool { members replace-all-with { 
 
 
 
-╔═════════════════════════╗
-║ Optional: Default Route ║
-╚═════════════════════════╝
+#╔═════════════════════════╗
+#║ Optional: Default Route ║
+#╚═════════════════════════╝
 
 tmsh modify net route default { pool /Common/InternetGateway_Pool }
 
 
 
-╔═════════════════╗
-║   TCP Profile   ║
-╚═════════════════╝
+#╔═════════════════╗
+#║   TCP Profile   ║
+#╚═════════════════╝
 
 tmsh create ltm profile tcp /Common/TCP_Profile { app-service none defaults-from f5-tcp-progressive }
 
 
 
-╔══════════════════╗
-║   HTTP Profile   ║
-╚══════════════════╝
+#╔══════════════════╗
+#║   HTTP Profile   ║
+#╚══════════════════╝
 
 tmsh create ltm profile http /Common/HTTP_Profile { app-service none defaults-from http proxy-type reverse }
 
 
 
-╔═══════════════════════════╗
-║   TCP Analytics Profile   ║
-╚═══════════════════════════╝
+#╔═══════════════════════════╗
+#║   TCP Analytics Profile   ║
+#╚═══════════════════════════╝
 
 tmsh create ltm profile tcp-analytics /Common/TCP_Analytics_Profile { app-service none collect-city enabled collect-continent enabled collect-country enabled collect-nexthop enabled collect-post-code enabled collect-region enabled collect-remote-host-ip enabled collect-remote-host-subnet enabled collected-by-client-side enabled collected-by-server-side enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled defaults-from tcp-analytics description "TCP Analytics Profile Description" external-logging-publisher none }
 
 
 
-╔════════════════════════════╗
-║   HTTP Analytics Profile   ║
-╚════════════════════════════╝
+#╔════════════════════════════╗
+#║   HTTP Analytics Profile   ║
+#╚════════════════════════════╝
 
 tmsh create ltm profile analytics /Common/HTTP_Analytics_Profile { alerts none app-service none captured-traffic-external-logging disabled captured-traffic-internal-logging enabled collect-dest-ip-geo enabled collect-geo enabled collect-http-timing-metrics enabled collect-ip enabled collect-max-tps-and-throughput enabled collect-methods enabled collect-os-and-browser enabled collect-page-load-time enabled collect-response-codes enabled collect-subnets enabled collect-url enabled collect-user-agent enabled collect-user-sessions enabled collected-stats-external-logging disabled collected-stats-internal-logging enabled countries-for-stat-collection none defaults-from analytics description "HTTP Analytics Profile Description" external-logging-publisher none ips-for-stat-collection none notification-by-email disabled notification-by-snmp disabled notification-by-syslog disabled notification-email-addresses none publish-irule-statistics enabled sampling enabled session-cookie-security always-secure session-timeout-minutes 10 smtp-config none subnet-masks none subnets-for-stat-collection none traffic-capture replace-all-with { HTTP_Analytics_Profile_Traffic_Capture { app-service none captured-protocols all captured-ready-for-js-injection disabled client-ips none dos-activity any max-application-response-time 0 max-application-response-time-valid disabled max-client-ttfb 0 max-client-ttfb-valid disabled max-clientside-network-latency 0 max-clientside-network-latency-valid disabled max-request-duration 0 max-request-duration-valid disabled max-request-size 0 max-request-size-valid disabled max-response-duration 0 max-response-duration-valid disabled max-response-size 0 max-response-size-valid disabled max-server-latency 0 max-server-latency-valid disabled max-serverside-network-latency 0 max-serverside-network-latency-valid disabled methods none min-application-response-time 0 min-client-ttfb 0 min-clientside-network-latency 0 min-request-duration 0 min-request-size 0 min-response-duration 0 min-response-size 0 min-server-latency 0 min-serverside-network-latency 0 request-captured-parts all request-content-filter-search-part none request-content-filter-search-string none response-captured-parts all response-codes none response-content-filter-search-part none response-content-filter-search-string none url-filter-type all url-path-prefixes none user-agent-substrings none node-addresses none virtual-servers none } } urls-for-stat-collection none }
 
 
 
-╔═════════════════════════════╗
-║   TLS Client Side Profile   ║
-╚═════════════════════════════╝
+#╔═════════════════════════════╗
+#║   TLS Client Side Profile   ║
+#╚═════════════════════════════╝
 
 tmsh install /sys crypto cert Imported-SSL-Certificate from-local-file /config/cloud/domain.name.rsa.crt
 tmsh install /sys crypto key Imported-SSL-Key from-local-file /config/cloud/domain.name.rsa.key
@@ -115,18 +116,18 @@ tmsh create ltm profile client-ssl /Common/Client_TLS_Profile { allow-expired-cr
 
 
 
-╔════════════════════════════╗
-║   IP Intelligence Policy   ║
-╚════════════════════════════╝
+#╔════════════════════════════╗
+#║   IP Intelligence Policy   ║
+#╚════════════════════════════╝
 
 tmsh create security ip-intelligence policy /Common/IP_Intelligence_Policy { blacklist-categories replace-all-with { additional { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } appiq_badactors { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } application_denial_of_service { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } attacked_ips { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } botnets { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } cloud_provider_networks { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } denial_of_service { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } infected_sources { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } mobile_threats { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } phishing { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } proxy { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } scanners { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } spam_sources { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } tor_proxy { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } web_attacks { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } windows_exploits { action drop log-blacklist-hit-only yes match-direction-override match-source-and-destination } } default-log-blacklist-hit-only yes }
 tmsh modify security ip-intelligence global-policy { ip-intelligence-policy /Common/IP_Intelligence_Policy }
 
 
 
-╔══════════════════════════╗
-║   Security Log Profile   ║
-╚══════════════════════════╝
+#╔══════════════════════════╗
+#║   Security Log Profile   ║
+#╚══════════════════════════╝
 
 tmsh create sys log-config publisher /Common/Local_DataSafe { destinations replace-all-with { local-syslog { } } }
 tmsh create security log profile /Common/Log_ALL
@@ -139,9 +140,9 @@ tmsh modify security log profile global-network { ip-intelligence { log-geo enab
 
 
 
-╔═════════════════════╗
-║   Virtual Servers   ║
-╚═════════════════════╝
+#╔═════════════════════╗
+#║   Virtual Servers   ║
+#╚═════════════════════╝
 
 tmsh create ltm virtual /Common/DVWA_Service_HTTPS { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "DVWA Service on HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.242:443 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/Client_TLS_Profile { context clientside } /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/DVWA_Pool persist replace-all-with { cookie { default yes } } rules none ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
 tmsh create ltm virtual /Common/DVWA_Service_HTTPS-Redirect- { address-status yes app-cloud-security-services none app-service none auth none bwc-policy none clone-pools none cmp-enabled yes connection-limit 0 ephemeral-auth-access-config none eviction-protected disabled fallback-persistence none flow-eviction-policy none last-hop-pool none metadata none mirror disabled mobile-app-tunnel disabled nat64 disabled parent-name none per-flow-request-access-policy none policies none rate-class none rate-limit disabled rate-limit-dst-mask 0 rate-limit-mode object rate-limit-src-mask 0 related-rules none serverssl-use-sni disabled service-down-immediate-action none service-policy none traffic-classes none traffic-matching-criteria none translate-address enabled translate-port enabled transparent-nexthop none urldb-feed-policy none description "DVWA Service on HTTP Redirect To HTTPS" vlans-enabled vlans replace-all-with { external } destination /Common/10.1.10.242:80 mask 255.255.255.255 source 0.0.0.0/0 source-address-translation { pool none type automap } source-port preserve ip-protocol tcp profiles replace-all-with { /Common/HTTP_Analytics_Profile { context all } /Common/TCP_Analytics_Profile { context all } /Common/HTTP_Profile { context all } /Common/TCP_Profile { context all } } pool /Common/DVWA_Pool persist replace-all-with { cookie { default yes } } rules { _sys_https_redirect } ip-intelligence-policy /Common/IP_Intelligence_Policy security-log-profiles replace-all-with { /Common/Log_ALL } }
@@ -156,9 +157,9 @@ tmsh create ltm virtual /Common/serviceMain-Redirect- { address-status yes app-c
 
 
 
-╔════════════════════════════════╗
-║   Security DoS Device Config   ║
-╚════════════════════════════════╝
+#╔════════════════════════════════╗
+#║   Security DoS Device Config   ║
+#╚════════════════════════════════╝
 
 tmsh modify security dos ip-uncommon-protolist ip-uncommon-protolist { description "Default IP Uncommon Protocol List" entries replace-all-with { igmp ggp ipv4 st cbt egp igp bbn-rcc nvp pup argus emcon xnet chaos mux dcn hmp prm xns-idp trunk-1 trunk-2 leaf-1 leaf-2 rdp irtp iso-tp4 netblt mfe-nsp merit-inp dccp 3pc idpr xtp ddp idpr-cmtp tp++ il ipv6 sdrp ipv6-route ipv6-frag idrp rsvp gre dsr bna esp ah i-nlsp swipe narp mobile tlsp skip ipv6-nonxt ipv6-opts 61 cftp 63 sat-expak kryptolan rvd ippc 68 sat-mon visa ipcv cpnx cphb wsn pvp br-sat-mon sun-nd wb-mon wb-expak iso-ip vmtp secure-vmtp vines ttp nsfnet-igp dgp tcf eigrp ospf sprite-rpc larp mtp ax.25 ipip micp scc-sp etherip encap 99 gmtp ifmp pnni pim aris scps qnx a/n ipcomp snp compaq-peer ipx-in-ip vrrp pgm 114 l2tp ddx iatp stp srp uti smp sm ptp isis fire crtp crdup sscopmce iplt sps pipe fc rsvp-e2e-ignore udplite mpls-in-ip manet hip shim6 wesp 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 icmp ipv6-icmp sctp tcp udp mobility-header rohc } }
 
@@ -280,34 +281,34 @@ tmsh modify security dos device-config dos-device-config { dos-device-vector { t
 
 
 
-╔══════════╗
-║   Save   ║
-╚══════════╝
+#╔══════════╗
+#║   Save   ║
+#╚══════════╝
 
 tmsh save /sys config
 
 
 
-╔═══════════╗
-║   To Do   ║
-╚═══════════╝
+#╔═══════════╗
+#║   To Do   ║
+#╚═══════════╝
+#
+#֍ Device ID Configuration
+#
+#֍ DDoS Configuration (for Virtual Servers)
+#
+#֍ ASM Configuration (when possible)
+#
+#֍ APM Configuration (when possible)
 
-֍ Device ID Configuration
-
-֍ DDoS Configuration (for Virtual Servers)
-
-֍ ASM Configuration (when possible)
-
-֍ APM Configuration (when possible)
 
 
-
-╔═╦═════════════════╦═╗
-║ ║                 ║ ║
-╠═╬═════════════════╬═╣
-║ ║ End of Document ║ ║
-╠═╬═════════════════╬═╣
-║ ║                 ║ ║
-╚═╩═════════════════╩═╝
+#╔═╦═════════════════╦═╗
+#║ ║                 ║ ║
+#╠═╬═════════════════╬═╣
+#║ ║ End of Document ║ ║
+#╠═╬═════════════════╬═╣
+#║ ║                 ║ ║
+#╚═╩═════════════════╩═╝
 
 

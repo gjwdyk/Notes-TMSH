@@ -25,6 +25,8 @@ Module(s) to be provisioned : LTM, AVR, ASM, FPS, AFM ( `ltm:nominal,avr:nominal
 
 After the CloudFormation finished AND the Big-IP on-boarding process (Configure Network, License and Provision) finished; login to Big-IP SSH CLI and execute the scripts in [F5_Configurations.txt](F5_Configurations.txt) line by line.
 
+Alternatively; upload the [F5_Configurations.sh](F5_Configurations.sh) into the Big-IP and execute it. Pay attention to the access and executeable flags of the file after upload.
+
 
 
 ***
