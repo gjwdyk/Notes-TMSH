@@ -36,7 +36,6 @@ Alternatively; upload the [F5_Configurations.sh](F5_Configurations.sh) into the 
 To Do:
 
 - [ ] Device ID Configuration
-- [ ] DDoS Configuration (for Virtual Servers)
 - [ ] ASM Configuration (when possible)
 - [ ] APM Configuration (when possible)
 - [ ] Translate to Ansible
