@@ -243,6 +243,17 @@ tmsh modify security dos profile /Common/SIP_Network_DoS_Protection_Profile { pr
 tmsh modify security dos profile /Common/SIP_Network_DoS_Protection_Profile { protocol-sip modify { SIP_Network_DoS_Protection_Profile { sip-attack-vector add { uri-limit     { allow-advertisement disabled allow-upstream-scrubbing disabled app-service none attacked-dst enabled auto-blacklisting enabled auto-scrubbing enabled auto-threshold disabled bad-actor enabled blacklist-category denial_of_service blacklist-detection-seconds 9 blacklist-duration 333 ceiling 22 enforce enabled floor 1 multiplier-mitigation-percentage inherited-default per-dst-ip-detection-pps 1 per-dst-ip-limit-pps 22 per-source-ip-detection-pps 1 per-source-ip-limit-pps 22 rate-increase 100 rate-limit 22 rate-threshold 1 scrubbing-category attacked_ips scrubbing-detection-seconds 9 scrubbing-duration 333 simulate-auto-threshold enabled state mitigate suspicious false threshold-mode manual } } } } }
 tmsh modify security dos profile /Common/SIP_Network_DoS_Protection_Profile { protocol-sip modify { SIP_Network_DoS_Protection_Profile { sip-attack-vector add { sip-malformed { allow-advertisement disabled allow-upstream-scrubbing disabled app-service none attacked-dst disabled auto-blacklisting disabled auto-scrubbing enabled auto-threshold disabled bad-actor disabled blacklist-category denial_of_service blacklist-detection-seconds 9 blacklist-duration 333 ceiling 22 enforce enabled floor 1 multiplier-mitigation-percentage inherited-default per-dst-ip-detection-pps 1 per-dst-ip-limit-pps 22 per-source-ip-detection-pps 1 per-source-ip-limit-pps 22 rate-increase 100 rate-limit 22 rate-threshold 1 scrubbing-category attacked_ips scrubbing-detection-seconds 9 scrubbing-duration 333 simulate-auto-threshold enabled state mitigate suspicious false threshold-mode manual } } } } }
 
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect- profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect- profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/SSH_Service_TCP profiles add { /Common/Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/VNC_Service_TCP profiles add { /Common/Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/serviceMain profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+tmsh modify ltm virtual /Common/serviceMain-Redirect- profiles add { /Common/HTTP_Network_DoS_Protection_Profile }
+
 
 
 ╔════════════════════════════════╗
