@@ -11,10 +11,10 @@
 ENABLING DEVICE ID+ WITH BIG-IP
 1. Log into your BIG-IP (requires version 12.1.0 or later and a provisioned, licensed LTM).
 2. Download the Device ID+ iApp template.<br>
-   https://safe-iapp-templates.s3.amazonaws.com/DeviceID.zip
+   [DeviceID.zip](https://safe-iapp-templates.s3.amazonaws.com/DeviceID.zip) or [DeviceID.zip](DeviceID.zip)
 3. Using the template, create an iApp in the BIG-IP as shown here.<br>
-   https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-DeviceID-GettingStarted.html<br>
-   https://f5cloudservices.zendesk.com/hc/en-us/articles/360060301673-Getting-Started-with-F5-Device-ID-<br>
+   [Getting Started with F5 Device ID+](https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-DeviceID-GettingStarted.html)<br>
+   [Getting Started with F5 Device ID+](https://f5cloudservices.zendesk.com/hc/en-us/articles/360060301673-Getting-Started-with-F5-Device-ID-)
 4. Copy the link below and paste it into the 1JS URL setting when creating the iApp.<br>
    ```
    https://dip.zeronaught.com/__imp_apg__/js/f5cs-samplesample-xsamplex.js
