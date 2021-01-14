@@ -15,7 +15,6 @@ ENABLING DEVICE ID+ WITH BIG-IP
 3. Using the template, create an iApp in the BIG-IP as shown here.<br>
    https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-DeviceID-GettingStarted.html<br>
    https://f5cloudservices.zendesk.com/hc/en-us/articles/360060301673-Getting-Started-with-F5-Device-ID-<br>
-   https://github.com/F5Networks/shape-iapp/blob/apg-__TAG__/APG/Deploy%20SAFE%20iApp%20Template%20in%20BIG-IP%2C%20__TAG__.pdf<br>
 4. Copy the link below and paste it into the 1JS URL setting when creating the iApp.<br>
    ```
    https://dip.zeronaught.com/__imp_apg__/js/f5cs-samplesample-xsamplex.js
