@@ -30,7 +30,7 @@ ENABLING DEVICE ID+ WITH BIG-IP
 ╚════════════════════════════╝
 ```
 
-ENABLING DEVICE ID+ WITH JS SNIPPET
+ENABLING DEVICE ID+ WITH JS SNIPPET<br>
 You can inject the JS snippet using a tag management system. Alternatively, you can inject the JS snippet by performing the following steps:
 1. Locate the </head> tag on the webpages of the sites where you want to collect Device IDs.
 2. Copy the code below to insert after the </head> tag:<br>
