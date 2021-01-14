@@ -42,7 +42,7 @@ Improvement :
 - [ ] "AS3 Declaration URL" already default to `none`
 - [ ] "Big-IP Modules to be Provisioned" already default to `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
 - [ ] [F5_Configurations.sh](F5_Configurations.sh) already uploaded automatically to Big-IP Unit and executed as part of on-boarding process
-- [ ] [Device ID's iApp Template](https://raw.githubusercontent.com/gjwdyk/TMSH-Notes/main/Device-ID/f5.analytics.tmpl) already uploaded automatically to Big-IP Unit
+- [ ] [Device ID's iApp Template](Device-ID/f5.analytics.tmpl) already uploaded automatically to Big-IP Unit
 
 
 
