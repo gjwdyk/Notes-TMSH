@@ -133,7 +133,7 @@ admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
 admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm html-rule all-properties
 ltm html-rule tag-append-html Device_ID_ShapeJSRule {
     action {
-        text "<script id=\"_imp_apg_dip_\"  imp_apg_cid=\"f5cs-a_aaN4ZQjkl0-3cfe4298\" type=\"text/javascript\" src=\"/__imp_apg__/js/f5cs-a_aaN4ZQjkl0-3cfe4298.js\" async ></script>"
+        text "<script id=\"_imp_apg_dip_\"  imp_apg_cid=\"f5cs-samplesample-xsamplex\" type=\"text/javascript\" src=\"/__imp_apg__/js/f5cs-samplesample-xsamplex.js\" async ></script>"
     }
     app-service /Common/Device_ID.app/Device_ID
     description none
@@ -193,7 +193,7 @@ ltm data-group internal Device_ID_ShapeJs {
     description none
     partition Common
     records {
-        /__imp_apg__/js/f5cs-a_aaN4ZQjkl0-3cfe4298.js {
+        /__imp_apg__/js/f5cs-samplesample-xsamplex.js {
             data ""
         }
     }
