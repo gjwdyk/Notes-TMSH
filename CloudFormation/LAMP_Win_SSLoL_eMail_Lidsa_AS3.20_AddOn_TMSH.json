@@ -32,7 +32,7 @@
 
     "BigIPImageID" : {
       "Type": "AWS::EC2::Image::Id",
-      "Default": "ami-0d0c3d0d97f5e6663",
+      "Default": "ami-0daf7ecfd1d5848f4",
       "Description": "Provide a valid AMI ID of Big-IP in the AWS Region. Refer to F5 Networks' GitHub AMI Maps for valid AMI ID for the target version and region. Singapore is ap-southeast-1."
     },
     "BigIPInstanceType" : {
