@@ -33,6 +33,23 @@ Alternatively; upload the [F5_Configurations.sh](F5_Configurations.sh) into the 
 
 
 
+Improvement from the above CloudFormation. To use the scripts, launch the [LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_TMSH.json](CloudFormation/LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_TMSH.json) CloudFormation template:
+
+<a href="https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=BigIP-LAMP-Win&templateURL=https://aws-f5-singapore-hc-demo-bucket-files.s3-ap-southeast-1.amazonaws.com/CF/LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_TMSH.json"><img align="center" src="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/raw/master/Figures/JigokuShoujoLaunchStack.png" width="140" height="22"/></a>
+
+Improvement :
+
+- [ ] "AS3 Declaration URL" already default to `none`
+- [ ] "Big-IP Modules to be Provisioned" already default to `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
+- [ ] [F5_Configurations.sh](F5_Configurations.sh) already uploaded automatically to Big-IP Unit and executed as part of on-boarding process
+- [ ] [Device ID's iApp Template](https://raw.githubusercontent.com/gjwdyk/TMSH-Notes/main/Device-ID/f5.analytics.tmpl) already uploaded automatically to Big-IP Unit
+
+
+
+***
+
+
+
 To Do:
 
 - [ ] Device ID Configuration
