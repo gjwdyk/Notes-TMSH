@@ -13,7 +13,7 @@ The AS3 (F5 Application Services 3 Extension) builds configurations within speci
 However F5 new features such as Device ID+ is currently NOT compatible with partition configurations.
 Furthermore AS3's capabilities in configuring F5 unit is still limited to fairly basic components only.
 
-To use the scripts, launch the [CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn.json](CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn.json) CloudFormation template:
+To use the scripts, launch the [CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn.json](https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/blob/master/CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_Original.json) CloudFormation template:
 
 <a href="https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=BigIP-LAMP-Win&templateURL=https://aws-f5-singapore-hc-demo-bucket-files.s3-ap-southeast-1.amazonaws.com/CF/CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_Original.json"><img align="center" src="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/raw/master/Figures/JigokuShoujoLaunchStack.png" width="140" height="22"/></a>
 
