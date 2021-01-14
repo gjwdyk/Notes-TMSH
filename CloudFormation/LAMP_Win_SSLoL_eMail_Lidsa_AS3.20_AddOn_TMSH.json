@@ -2044,6 +2044,7 @@
            "tmsh+=(\n",
            "\"tmsh load sys application template /config/cloud/aws/f5.service_discovery.tmpl\"\n",
            "\"tmsh load sys application template /config/cloud/aws/f5.cloud_logger.v1.0.0.tmpl\"\n",
+           "\"tmsh load sys application template /config/cloud/aws/f5.analytics.tmpl\"\n",
            "\"tmsh install /sys crypto cert HC-Imported-SSL-Certificate from-local-file /config/cloud/domain.name.rsa.crt\"\n",
            "\"tmsh install /sys crypto key HC-Imported-SSL-Key from-local-file /config/cloud/domain.name.rsa.key\"\n",
            "\"tmsh save /sys config\")\n",
@@ -2110,6 +2111,12 @@
         "mode": "000755",
         "owner": "root",
         "source": "http://cdn.f5.com/product/cloudsolutions/iapps/common/f5-service-discovery/v2.3.2/f5.service_discovery.tmpl"
+       },
+       "/config/cloud/aws/f5.analytics.tmpl": {
+        "group": "root",
+        "mode": "000755",
+        "owner": "root",
+        "source": "https://raw.githubusercontent.com/gjwdyk/TMSH-Notes/main/Device-ID/f5.analytics.tmpl"
        },
        "/config/cloud/aws/getNameServer.sh": {
         "content": {
@@ -2226,6 +2233,8 @@
            "printf \"`cat /config/lidsa/TemporaryLidsa`\" > /config/lidsa/LoremIpsumDolorSitAmet\n",
            "rm --force /config/lidsa/TemporaryLidsa\n",
 
+           "/config/F5_Configurations.sh\n",
+
            "\n"
           ]
          ]
@@ -2329,6 +2338,7 @@
            "      set hashes(f5.policy_creator.tmpl) 06539e08d115efafe55aa507ecb4e443e83bdb1f5825a9514954ef6ca56d240ed00c7b5d67bd8f67b815ee9dd46451984701d058c89dae2434c89715d375a620",
            "      set hashes(f5.service_discovery.tmpl) 4811a95372d1dbdbb4f62f8bcc48d4bc919fa492cda012c81e3a2fe63d7966cc36ba8677ed049a814a930473234f300d3f8bced2b0db63176d52ac99640ce81b",
            "      set hashes(f5.cloud_logger.v1.0.0.tmpl) 64a0ed3b5e32a037ba4e71d460385fe8b5e1aecc27dc0e8514b511863952e419a89f4a2a43326abb543bba9bc34376afa114ceda950d2c3bd08dab735ff5ad20",
+           "      set hashes(f5.analytics.tmpl) 8f8cbe107ade94d1577fab518eff091630eb656e8e1ba150b2a8e2343b9bfac1fa4982f011e8cf6a11b33642ee7edbdaccec6b3b5b048355cf1bbf2f84a87629",
            "      set hashes(f5-appsvcs-3.20.0-3.noarch.rpm) d4bba8892a2068bb53f88c6090dc65f17707abca35a7ed2fff39980057fe7f7a2ebf710ab2284a1d83d70b7746beabad9df603017c0fd8728f7457661c95ac8d",
            "      set hashes(f5-cloud-failover-1.1.0-0.noarch.rpm) 15a440c299f9e4af86a3d0f5b0d75b0054385b95e47c3ef116d2e0bfb0041a26dcbf549028e2a26d2c718ec61446bd657be38fbbcd9db781efe5414c174ac68c",
            "      set file_path [lindex $tmsh::argv 1]",
