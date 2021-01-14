@@ -19,9 +19,9 @@ To use the scripts, launch the [CF_BigIP_LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn
 
 Inputs :
 
-- [] "AS3 Declaration URL": `none`
-- [] "Big-IP Modules to be Provisioned": `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
-- [] License Type: F5-BIG-VE-LAB-V18-LIC (or equivalent)
+- [ ] "AS3 Declaration URL": `none`
+- [ ] "Big-IP Modules to be Provisioned": `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
+- [ ] License Type: F5-BIG-VE-LAB-V18-LIC (or equivalent)
 
 After the CloudFormation finished AND the Big-IP on-boarding process (Configure Network, License and Provision) finished; login to Big-IP SSH CLI and execute the scripts in [F5_Configurations.txt](F5_Configurations.txt) line by line.
 
