@@ -3942,6 +3942,30 @@ tmsh modify security dos device-config dos-device-config { dos-device-vector { t
 
 
 
+╔═══════════════════════════════════════╗
+║ Draft Thresholds for Demo Environment ║
+╚═══════════════════════════════════════╝
+
+╔═══════╗   ╔════════╗   ╔═════════╗   ╔═════════╗   ╔═════════╗   ╔══════════╗
+║   1   ║ - ║   22   ║ - ║   123   ║ - ║   333   ║ - ║   999   ║ - ║   3210   ║
+╚═══════╝   ╚════════╝   ╚═════════╝   ╚═════════╝   ╚═════════╝   ╚══════════╝
+
+DoS Profile (Common Thresholds) : 22 - 123
+DoS Profile (TCP Thresholds)    : 123 - 333
+
+Device DoS (Common Thresholds) : 123 - 333
+Device DoS (TCP Thresholds)    : 333 - 999
+
+TCP Thresholds:
+● TCP SYN Flood
+● TCP SYN ACK Flood
+● TCP PUSH Flood
+● TCP RST Flood
+● TCP Window Size
+● TCP Half Open
+
+
+
 ╔═╦═════════════════╦═╗
 ║ ║                 ║ ║
 ╠═╬═════════════════╬═╣
