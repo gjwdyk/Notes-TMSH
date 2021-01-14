@@ -1,0 +1,718 @@
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual DVWA_Service_HTTPS all-properties
+[api-status-warning] ltm/virtual, properties : deprecated : mobile-app-tunnel, urldb-feed-policy
+ltm virtual DVWA_Service_HTTPS {
+    address-status yes
+    app-cloud-security-services none
+    app-service none
+    auth none
+    auto-discovery disabled
+    auto-lasthop default
+    bwc-policy none
+    clone-pools none
+    cmp-enabled yes
+    connection-limit 0
+    creation-time 2021-01-10:20:57:30
+    description "DVWA Service on HTTPS"
+    destination 10.1.10.242:https
+    enabled
+    ephemeral-auth-access-config none
+    eviction-protected disabled
+    fallback-persistence none
+    flow-eviction-policy none
+    fw-enforced-policy none
+    fw-staged-policy none
+    gtm-score 0
+    ip-intelligence-policy IP_Intelligence_Policy
+    ip-protocol tcp
+    last-hop-pool none
+    last-modified-time 2021-01-13:12:27:09
+    mask 255.255.255.255
+    metadata none
+    mirror disabled
+    mobile-app-tunnel disabled
+    nat64 disabled
+    parent-name none
+    partition Common
+    per-flow-request-access-policy none
+    persist {
+        cookie {
+            default yes
+        }
+    }
+    policies none
+    pool DVWA_Pool
+    profiles {
+        Client_TLS_Profile {
+            context clientside
+        }
+        Device_ID_ShapeJsHtml {
+            context all
+        }
+        Device_ID_oneconnect {
+            context all
+        }
+        HTTP_Analytics_Profile {
+            context all
+        }
+        HTTP_Network_DoS_Protection_Profile {
+            context all
+        }
+        HTTP_Profile {
+            context all
+        }
+        TCP_Analytics_Profile {
+            context all
+        }
+        TCP_Profile {
+            context all
+        }
+    }
+    rate-class none
+    rate-limit disabled
+    rate-limit-dst-mask 0
+    rate-limit-mode object
+    rate-limit-src-mask 0
+    related-rules none
+    rules {
+        Device_ID_Shape_iRule__Common_DVWA_Service_HTTPS
+    }
+    security-log-profiles {
+        Log_ALL
+    }
+    security-nat-policy {
+        policy none
+        use-device-policy no
+        use-route-domain-policy no
+    }
+    serverssl-use-sni disabled
+    service-down-immediate-action none
+    service-policy none
+    source 0.0.0.0/0
+    source-address-translation {
+        pool none
+        type automap
+    }
+    source-port preserve
+    syn-cookie-status not-activated
+    throughput-capacity infinite
+    traffic-classes none
+    traffic-matching-criteria none
+    translate-address enabled
+    translate-port enabled
+    transparent-nexthop none
+    urldb-feed-policy none
+    vlans {
+        external
+    }
+    vlans-enabled
+    vs-index 2
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile html Device_ID_ShapeJsHtml all-properties
+ltm profile html Device_ID_ShapeJsHtml {
+    app-service none
+    content-detection disabled
+    content-selection { text/html text/xhtml }
+    defaults-from html
+    description none
+    partition Common
+    rules {
+        Device_ID_ShapeJSRule
+    }
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm html-rule all-properties
+ltm html-rule tag-append-html Device_ID_ShapeJSRule {
+    action {
+        text "<script id=\"_imp_apg_dip_\"  imp_apg_cid=\"f5cs-a_aaN4ZQjkl0-3cfe4298\" type=\"text/javascript\" src=\"/__imp_apg__/js/f5cs-a_aaN4ZQjkl0-3cfe4298.js\" async ></script>"
+    }
+    app-service /Common/Device_ID.app/Device_ID
+    description none
+    match {
+        attribute-name none
+        attribute-value none
+        tag-name head
+    }
+    partition Common
+}
+ltm html-rule tag-raise-event Device_ID_prepened_script {
+    app-service /Common/Device_ID.app/Device_ID
+    description none
+    match {
+        attribute-name none
+        attribute-value none
+        tag-name script
+    }
+    partition Common
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile one-connect Device_ID_oneconnect all-properties
+ltm profile one-connect Device_ID_oneconnect {
+    app-service /Common/Device_ID.app/Device_ID
+    defaults-from oneconnect
+    description none
+    idle-timeout-override disabled
+    limit-type none
+    max-age 86400
+    max-reuse 1000
+    max-size 10000
+    partition Common
+    share-pools disabled
+    source-mask 255.255.255.255
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm data-group all-properties
+ltm data-group internal Device_ID_SafeJsApiEp {
+    app-service /Common/Device_ID.app/Device_ID
+    description none
+    partition Common
+    records {
+        /__imp_apg__/api/ {
+            data ""
+        }
+    }
+    type string
+}
+ltm data-group internal Device_ID_ShapeJs {
+    app-service /Common/Device_ID.app/Device_ID
+    description none
+    partition Common
+    records {
+        /__imp_apg__/js/f5cs-a_aaN4ZQjkl0-3cfe4298.js {
+            data ""
+        }
+    }
+    type string
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm profile server-ssl Device_ID_serverssl all-properties
+ltm profile server-ssl Device_ID_serverssl {
+    alert-timeout indefinite
+    allow-expired-crl disabled
+    app-service /Common/Device_ID.app/Device_ID
+    authenticate once
+    authenticate-depth 9
+    authenticate-name none
+    bypass-on-client-cert-fail disabled
+    bypass-on-handshake-alert disabled
+    c3d-ca-cert none
+    c3d-ca-key none
+    c3d-ca-passphrase none
+    c3d-cert-extension-custom-oids none
+    c3d-cert-extension-includes { basic-constraints extended-key-usage key-usage subject-alternative-name }
+    c3d-cert-lifespan 24
+    ca-file none
+    cache-size 262144
+    cache-timeout 3600
+    cert none
+    chain none
+    cipher-group none
+    ciphers DEFAULT
+    crl none
+    crl-file none
+    data-0rtt disabled
+    defaults-from serverssl
+    description none
+    expire-cert-response-control drop
+    generic-alert enabled
+    handshake-timeout 10
+    key none
+    max-active-handshakes indefinite
+    mod-ssl-methods disabled
+    mode enabled
+    ocsp none
+    options { dont-insert-empty-fragments no-tlsv1.3 }
+    partition Common
+    passphrase none
+    peer-cert-mode ignore
+    proxy-ssl disabled
+    proxy-ssl-passthrough disabled
+    renegotiate-period indefinite
+    renegotiate-size indefinite
+    renegotiation enabled
+    retain-certificate true
+    secure-renegotiation require-strict
+    server-name dip.zeronaught.com
+    session-mirroring disabled
+    session-ticket disabled
+    sni-default false
+    sni-require false
+    ssl-c3d disabled
+    ssl-forward-proxy disabled
+    ssl-forward-proxy-bypass disabled
+    ssl-forward-proxy-verified-handshake disabled
+    ssl-sign-hash any
+    strict-resume disabled
+    unclean-shutdown enabled
+    untrusted-cert-response-control drop
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm persistence cookie Device_ID_persist_cookie__Common_DVWA_Service_HTTPS all-properties
+ltm persistence cookie Device_ID_persist_cookie__Common_DVWA_Service_HTTPS {
+    always-send disabled
+    app-service /Common/Device_ID.app/Device_ID
+    cookie-encryption disabled
+    cookie-encryption-passphrase none
+    cookie-name none
+    defaults-from cookie
+    description none
+    encrypt-cookie-poolname disabled
+    expiration 0
+    hash-length 0
+    hash-offset 0
+    httponly enabled
+    match-across-pools disabled
+    match-across-services disabled
+    match-across-virtuals disabled
+    method insert
+    mirror disabled
+    override-connection-limit disabled
+    partition Common
+    secure enabled
+    timeout 180
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm pool Device_ID_ShapeProdPool all-properties
+[api-status-warning] ltm/pool, properties : deprecated : autoscale-group-id
+ltm pool Device_ID_ShapeProdPool {
+    allow-nat yes
+    allow-snat yes
+    app-service /Common/Device_ID.app/Device_ID
+    autoscale-group-id none
+    description none
+    gateway-failsafe-device none
+    ignore-persisted-weight disabled
+    ip-tos-to-client pass-through
+    ip-tos-to-server pass-through
+    link-qos-to-client pass-through
+    link-qos-to-server pass-through
+    load-balancing-mode round-robin
+    members {
+        _auto_34.120.21.7:https {
+            address 34.120.21.7
+            app-service none
+            connection-limit 0
+            description none
+            dynamic-ratio 1
+            ephemeral true
+            inherit-profile enabled
+            logging disabled
+            monitor default
+            priority-group 0
+            rate-limit disabled
+            ratio 1
+            session user-enabled
+            state unchecked
+            fqdn {
+                autopopulate enabled
+                name dip.zeronaught.com
+            }
+            metadata none
+            profiles none
+        }
+        dip.zeronaught.com:https {
+            address any6
+            app-service /Common/Device_ID.app/Device_ID
+            connection-limit 0
+            description none
+            dynamic-ratio 1
+            ephemeral false
+            inherit-profile enabled
+            logging disabled
+            monitor default
+            priority-group 0
+            rate-limit disabled
+            ratio 1
+            session user-enabled
+            state fqdn-up
+            fqdn {
+                autopopulate enabled
+                name dip.zeronaught.com
+            }
+            metadata none
+            profiles none
+        }
+    }
+    metadata none
+    min-active-members 0
+    min-up-members 0
+    min-up-members-action failover
+    min-up-members-checking disabled
+    monitor none
+    partition Common
+    profiles none
+    queue-depth-limit 0
+    queue-on-connection-limit disabled
+    queue-time-limit 0
+    reselect-tries 0
+    service-down-action none
+    slow-ramp-time 10
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm node _auto_34.120.21.7 dip.zeronaught.com all-properties
+ltm node _auto_34.120.21.7 {
+    address 34.120.21.7
+    app-service none
+    connection-limit 0
+    description none
+    dynamic-ratio 1
+    ephemeral true
+    fqdn {
+        address-family ipv4
+        autopopulate enabled
+        down-interval 5
+        interval 3600
+        name dip.zeronaught.com
+    }
+    logging disabled
+    metadata none
+    monitor none
+    partition Common
+    rate-limit disabled
+    ratio 1
+    session user-enabled
+    state unchecked
+}
+ltm node dip.zeronaught.com {
+    address any6
+    app-service /Common/Device_ID.app/Device_ID
+    connection-limit 0
+    description none
+    dynamic-ratio 1
+    ephemeral false
+    fqdn {
+        address-family ipv4
+        autopopulate enabled
+        down-interval 5
+        interval 3600
+        name dip.zeronaught.com
+    }
+    logging disabled
+    metadata none
+    monitor none
+    partition Common
+    rate-limit disabled
+    ratio 1
+    session user-enabled
+    state fqdn-up
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm virtual Device_ID_shape_ssl_vs all-properties
+[api-status-warning] ltm/virtual, properties : deprecated : mobile-app-tunnel, urldb-feed-policy
+ltm virtual Device_ID_shape_ssl_vs {
+    address-status yes
+    app-cloud-security-services none
+    app-service /Common/Device_ID.app/Device_ID
+    auth none
+    auto-discovery disabled
+    auto-lasthop default
+    bwc-policy none
+    clone-pools none
+    cmp-enabled yes
+    connection-limit 0
+    creation-time 2021-01-13:12:26:47
+    description "Server Side SSL VS"
+    destination 1.2.3.4:https
+    enabled
+    ephemeral-auth-access-config none
+    eviction-protected disabled
+    fallback-persistence none
+    flow-eviction-policy none
+    fw-enforced-policy none
+    fw-staged-policy none
+    gtm-score 0
+    ip-intelligence-policy none
+    ip-protocol tcp
+    last-hop-pool none
+    last-modified-time 2021-01-13:12:27:09
+    mask 255.255.255.255
+    metadata none
+    mirror disabled
+    mobile-app-tunnel disabled
+    nat64 disabled
+    parent-name none
+    partition Common
+    per-flow-request-access-policy none
+    persist none
+    policies none
+    pool Device_ID_ShapeProdPool
+    profiles {
+        Device_ID_oneconnect {
+            context all
+        }
+        Device_ID_serverssl {
+            context serverside
+        }
+        HTTP_Profile {
+            context all
+        }
+        tcp {
+            context all
+        }
+    }
+    rate-class none
+    rate-limit disabled
+    rate-limit-dst-mask 0
+    rate-limit-mode object
+    rate-limit-src-mask 0
+    related-rules none
+    rules none
+    security-log-profiles none
+    security-nat-policy {
+        policy none
+        use-device-policy no
+        use-route-domain-policy no
+    }
+    serverssl-use-sni disabled
+    service-down-immediate-action none
+    service-policy none
+    source 0.0.0.0/0
+    source-address-translation {
+        pool none
+        type automap
+    }
+    source-port preserve
+    syn-cookie-status not-activated
+    throughput-capacity infinite
+    traffic-classes none
+    traffic-matching-criteria none
+    translate-address enabled
+    translate-port enabled
+    transparent-nexthop none
+    urldb-feed-policy none
+    vlans none
+    vlans-disabled
+    vs-index 12
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list ltm rule Device_ID_Shape_iRule__Common_DVWA_Service_HTTPS all-properties
+ltm rule Device_ID_Shape_iRule__Common_DVWA_Service_HTTPS {
+    app-service /Common/Device_ID.app/Device_ID
+    partition Common
+proc base64url_decode { var_b64_url } {
+  set var_b64 "[string map [list - + _ / ] $var_b64_url]"
+  if { [string length $var_b64] % 4 != 0 } {
+      append var_b64 [string repeat = [expr {4 - [string length $var_b64] % 4}]]
+  }
+  return [b64decode $var_b64]
+}
+
+when RULE_INIT {
+    set b64_key "0"
+    # using static variable for the key as there is a single key per customer.
+    # if at some point, multiple key support is required (per app key), we will need to use local variable
+    # and live with the performance degradation.
+    # using global variable is not accepted. see https://support.f5.com/csp/article/K13033
+    set static::key 0
+
+    if {$b64_key != 0} {
+        set static::key [b64decode $b64_key]
+    }
+}
+
+# Set the lowest priority to not disturb the Customer iRules
+priority 1000
+
+proc route_shape_traffic {use_different_ssl shape_pool shape_debug} {
+     # This variable used when customer choose to use different ssl for shape pools
+    set shape_ssl_vs_name  /Common/Device_ID_shape_ssl_vs
+    if { $use_different_ssl } {
+        persist none
+        # In case a different ssl is required for APG pool, disable SSL on serverside to pass data to the encrypting VS
+
+        virtual $shape_ssl_vs_name
+        if { $shape_debug }{ log local0. "successfully routed to $shape_ssl_vs_name" }
+    } else {
+
+        pool $shape_pool
+    }
+}
+
+proc request_js {use_different_ssl shape_pool kill_switch http_path shape_debug} {
+    # If request is for 1JS or telemetry request, route it to Shape
+    if { $shape_debug }{ log local0. "[IP::client_addr]:[TCP::client_port]: Got JS request: ${http_path}" }
+
+    # Test if the pool has active members before sending traffic
+    if  { [active_members ${shape_pool}] >= 1 && $kill_switch == 0 } {
+        snat automap
+        call route_shape_traffic $use_different_ssl ${shape_pool} $shape_debug
+        return 0
+    } else {
+        # If the ShapeShifter pool is not available, then no need to forward this to origin, send back an empty 200 OK
+        # Can also put an empty file at Origin for the Shape js request for occasions when the iRule is disabled.
+        if { $shape_debug }{ log local0. "[IP::client_addr]:[TCP::client_port]: ShapeJS URI, but ${shape_pool} pool is down or Kill Switch is active!!! Sent HTTP 200 response"}
+        HTTP::respond 200 noserver Cache-Control "no-cache"
+        return 1
+    }
+}
+
+when SERVER_CONNECTED {
+    # Disable SSL serverside profile for SSL offload use cases
+    if {[LB::server port] == 80 } {
+
+    }
+}
+
+when CLIENT_ACCEPTED {
+    set cookie_name "_imp_apg_r_"
+    set alg "aes-128-cbc"
+    set fr_header ""
+    set safe_endpoints /Common/Device_ID_SafeEndpoint
+    set safe_domain "dip.zeronaught.com"
+    set is_did 1
+    # Log debug messages (1=yes, 0=no)
+    # Set to 0 when not debugging this iRule
+    set shape_debug 1
+
+    set JS_DG /Common/Device_ID_ShapeJs
+    # Entry points that should be injected with 1JS
+    set included_entry_points /Common/Device_ID_includedEntryPoints
+    # Inject 1JS to specific path
+    set inject_specific_path 0
+    # Entry points that should be excluded from 1JS injection
+    set excluded_entry_points /Common/Device_ID_excludedEntryPoints
+    # Exclude 1JS Injection from specific paths
+    set inject_exclude_path 0
+    # Set 'Rewrite XFF header with Connecting IP' variable
+    set rewrite_xff 1
+
+    # Set 'Add different server SSL profile for Shape pool' variable
+    # If true then we split traffic into 2 different VS (client<->bip<->ws, bip<->APG)
+    set use_different_ssl true
+    # APG pool for 1JS routing
+    set shape_pool /Common/Device_ID_ShapeProdPool
+    # Kill switch/bypass of Shape API (1=yes, 0=no)
+    set kill_switch 0
+}
+
+when HTTP_REQUEST {
+
+    # bypass the injection if needed (HTML::disable)
+    set bypass 0
+
+    # Remove trailing '/' from HTTP::path (if no trailing slash, nothing will happened)
+    set http_path [string tolower [HTTP::path -normalized]]
+    if { not ( ${http_path} equals "/" ) } { set http_path [string trimright ${http_path} "/"] }
+    # JavaScript path
+    set js_path [HTTP::path -normalized]
+
+    #Save the name of virtual's default pool
+    set app_pool [LB::server pool]
+
+    if { $kill_switch } {
+        if { $shape_debug }{ log local0. "Kill switch activated, suspending processing."}
+        HTML::disable
+        return
+    }
+
+    # Disable the HTML if injection configured to specific pages
+    if { $inject_specific_path } {
+        HTML::disable
+        foreach {endpoint} [class names $included_entry_points] {
+            if { ${http_path} matches_glob $endpoint } {
+                HTML::enable
+            }
+        }
+    }
+    if { $inject_exclude_path } {
+        foreach {endpoint} [class names $excluded_entry_points] {
+            if { ${http_path} matches_glob $endpoint } {
+              HTML::disable
+            }
+        }
+    }
+
+    if { [class match [string tolower $js_path] starts_with /Common/Device_ID_SafeJsApiEp] || ( [HTTP::method] eq "GET" && [class match $js_path equals $JS_DG]) } {
+        set bypass 1
+        # If request is for 1JS or JS API call, route it to Shape and get out
+        HTTP::host $safe_domain
+        if { [call request_js $use_different_ssl $shape_pool $kill_switch ${http_path} $shape_debug] } {
+            return
+        }
+    } else {
+        # No need for cookie processing in DID
+        if {$is_did} {return}
+        if { [HTTP::header exists $fr_header] } {
+            if { $shape_debug } { log local0. "WARNING: Found $fr_header! removing" }
+            HTTP::header remove $fr_header
+        }
+        if { [HTTP::cookie exists $cookie_name]} {
+            if { $static::key != 0 } {
+                foreach {endpoint} [class names $safe_endpoints] {
+                    if {${http_path} matches_glob $endpoint} {
+                        catch {
+                            set cookie_value [URI::decode [HTTP::cookie value $cookie_name]]
+                            set cookie_value [lindex [regexp -inline {\"fr\":\"(.*?)\"} $cookie_value] 1]
+                            set iv [call base64url_decode [substr $cookie_value 0 24]]
+                            set enc_data [call base64url_decode [substr $cookie_value 24]]
+                            # If customer entered wrong encryption key, we won't be able to decrypt the cookie so we won't process it
+                            set dec_fr_value [CRYPTO::decrypt -alg $alg -key $static::key -iv $iv $enc_data]
+                            if { $shape_debug } { log local0. "$cookie_name decrypted content: $dec_fr_value" }
+                            HTTP::header insert $fr_header $dec_fr_value
+                        } error
+                        if { $error != "" && $shape_debug } {
+                            log local0. "Could not decrypt fr cookie: $error"
+                        }
+                        break
+                    }
+                }
+            }
+            HTTP::cookie remove $cookie_name
+        }
+    }
+
+    # Insert XFF header
+    if { $rewrite_xff && !$bypass } {
+        HTTP::header insert X-Forwarded-For [IP::client_addr]
+    }
+}
+
+when HTTP_RESPONSE {
+
+    # Clear the injected 1JS flag for each response.
+    if {[info exists is_js_injected]} {
+        unset is_js_injected
+    }
+
+    # Do not inject javascript for Shape interstitials
+    if { ([info exists bypass] && $bypass)} {
+        HTML::disable
+    }
+}
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
