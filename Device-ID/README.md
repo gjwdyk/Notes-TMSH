@@ -13,8 +13,7 @@ ENABLING DEVICE ID+ WITH BIG-IP
 2. Download the Device ID+ iApp template.<br>
    [DeviceID.zip](https://safe-iapp-templates.s3.amazonaws.com/DeviceID.zip) or [DeviceID.zip](DeviceID.zip)
 3. Using the template, create an iApp in the BIG-IP as shown here.<br>
-   [Getting Started with F5 Device ID+](https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-DeviceID-GettingStarted.html)<br>
-   [Getting Started with F5 Device ID+](https://f5cloudservices.zendesk.com/hc/en-us/articles/360060301673-Getting-Started-with-F5-Device-ID-)
+   [Getting Started with F5 Device ID+](https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-DeviceID-GettingStarted.html) or [Getting Started with F5 Device ID+](https://f5cloudservices.zendesk.com/hc/en-us/articles/360060301673-Getting-Started-with-F5-Device-ID-)
 4. Copy the link below and paste it into the 1JS URL setting when creating the iApp.<br>
    ```
    https://dip.zeronaught.com/__imp_apg__/js/f5cs-samplesample-xsamplex.js
@@ -33,8 +32,8 @@ ENABLING DEVICE ID+ WITH BIG-IP
 
 ENABLING DEVICE ID+ WITH JS SNIPPET<br>
 You can inject the JS snippet using a tag management system. Alternatively, you can inject the JS snippet by performing the following steps:
-1. Locate the </head> tag on the webpages of the sites where you want to collect Device IDs.
-2. Copy the code below to insert after the </head> tag:<br>
+1. Locate the `</head>` tag on the webpages of the sites where you want to collect Device IDs.
+2. Copy the code below to insert after the `</head>` tag:<br>
    ```
    <script async defer src="https://dip.zeronaught.com/__imp_apg__/js/f5cs-samplesample-xsamplex.js" id="_imp_apg_dip_" _imp_apg_cid_="f5cs-samplesample-xsamplex" _imp_apg_api_domain_="https://dip.zeronaught.com"></script>
    ```
