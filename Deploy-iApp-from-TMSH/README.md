@@ -2,7 +2,7 @@
 
 
 
-[Deploy an Application Service from an iApp Template via TMSH](https://devcentral.f5.com/s/question/0D51T00006i7QWZSA2/deploy-an-application-service-from-an-iapp-template-via-tmsh)
+Copied from : [Deploy an Application Service from an iApp Template via TMSH](https://devcentral.f5.com/s/question/0D51T00006i7QWZSA2/deploy-an-application-service-from-an-iapp-template-via-tmsh)
 
 I've seen a couple of refernces to how to do this but nothing fully fledged out so here is my attempt to do so.
 The actual man page of the command can be viewed by issuing the following from within TMSH.
