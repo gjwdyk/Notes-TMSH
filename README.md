@@ -41,7 +41,7 @@ Improvements :
 
 - [ ] "AS3 Declaration URL" already default to `none`
 - [ ] "Big-IP Modules to be Provisioned" already default to `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
-- [ ] [F5_Configurations.sh](F5_Configurations.sh) already uploaded automatically to Big-IP Unit and executed as part of on-boarding process, which includes:
+- [ ] [F5_Configurations.sh](F5_Configurations.sh) already uploaded automatically to Big-IP Unit and executed as part of on-boarding process, which includes:<br>
       - [ ] Nodes, Pools and Monitors
       - [ ] TCP, HTTP and Client-Side-TLS profiles
       - [ ] TCP and HTTP Analytics profiles
