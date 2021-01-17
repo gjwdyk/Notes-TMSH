@@ -567,7 +567,7 @@ tmsh save /sys config
 #║   To Do   ║
 #╚═══════════╝
 #
-#֍ Device ID Configuration
+#֍ Device ID Logging to ELK
 #
 #֍ ASM Configuration (when possible)
 #
