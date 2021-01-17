@@ -63,6 +63,9 @@ To Do:
 
 - [ ] Device ID Logging to ELK
 - [ ] DataSafe Tools
+- [ ] Better Cookie Persistence Profile (Encryption)
+- [ ] Better Client SSL Profile (accomodate as many cipher and algorithm)
+- [ ] Filter Server's and Big-IP Information on HTTP Header response
 - [ ] ASM Configuration (when possible)
 - [ ] APM Configuration (when possible)
 - [ ] Translate to Ansible
