@@ -1,0 +1,91 @@
+
+
+
+╔═╦══════════════════╦═╗
+║ ║                  ║ ║
+╠═╬══════════════════╬═╣
+║ ║   F5 Device ID   ║ ║
+╠═╬══════════════════╬═╣
+║ ║                  ║ ║
+╚═╩══════════════════╩═╝
+
+╔═══════════════════╗
+║   General Notes   ║
+╚═══════════════════╝
+
+The following iRules were derived from the iRules implemented by Device ID iApp, while maintaining the main logics.
+● Parts of iRules which will never be executed were removed.
+● Parts of iRules which will never be used were removed.
+● Code flows were optimized due to the removed parts.
+● Variable names and Object names were adapted to TMSH commands (to create the corresponding Device ID components).
+● Replacement of !(exclamation) operand to not().
+● Remove ALL comments
+
+
+
+╔══════════════════════════╗
+║   The Optimized iRules   ║
+╚══════════════════════════╝
+
+priority 1000
+
+proc request_js { shape_pool http_path shape_debug } {
+ set shape_ssl_vs_name /Common/DeviceID_ShapeSSLVS
+ if { $shape_debug } { log local0. "[IP::client_addr]:[TCP::client_port]: Got JS request: ${http_path}" }
+ if { [active_members ${shape_pool}] >= 1 } {
+  snat automap
+  persist none
+  virtual $shape_ssl_vs_name
+  if { $shape_debug } { log local0. "Successfully routed to $shape_ssl_vs_name" }
+  return 0
+ } else {
+  if { $shape_debug } { log local0. "[IP::client_addr]:[TCP::client_port]: ShapeJS URI, but ${shape_pool} pool is down. Sent HTTP 200 response" }
+  HTTP::respond 200 noserver Cache-Control "no-cache"
+  return 1
+ }
+}
+
+when CLIENT_ACCEPTED {
+ set shape_debug 1
+ set safe_domain "dip.zeronaught.com"
+ set JS_DG /Common/DeviceID_ShapeJS
+ set shape_pool /Common/DeviceID_ShapePool
+ set rewrite_xff 1
+}
+
+when HTTP_REQUEST {
+ set bypass 0
+ set http_path [string tolower [HTTP::path -normalized]]
+ if { not ( ${http_path} equals "/" ) } { set http_path [string trimright ${http_path} "/"] }
+ set js_path [HTTP::path -normalized]
+ if { [class match [string tolower $js_path] starts_with /Common/DeviceID_SafeJSAPIEP] || ( [HTTP::method] eq "GET" && [class match $js_path equals $JS_DG] ) } {
+  set bypass 1
+  HTTP::host $safe_domain
+  if { [call request_js $shape_pool ${http_path} $shape_debug] } {
+   return
+  }
+ } else {
+  return
+ }
+ if { $rewrite_xff && not ( $bypass ) } {
+  HTTP::header insert X-Forwarded-For [IP::client_addr]
+ }
+}
+
+when HTTP_RESPONSE {
+ if { ( [info exists bypass] && $bypass ) } {
+  HTML::disable
+ }
+}
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+

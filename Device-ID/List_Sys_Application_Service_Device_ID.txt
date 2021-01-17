@@ -1,0 +1,115 @@
+
+
+
+╔═╦══════════════════╦═╗
+║ ║                  ║ ║
+╠═╬══════════════════╬═╣
+║ ║   F5 Device ID   ║ ║
+╠═╬══════════════════╬═╣
+║ ║                  ║ ║
+╚═╩══════════════════╩═╝
+
+╔════════════════════════════════════════════╗
+║   List Sys Application Service Device ID   ║
+╚════════════════════════════════════════════╝
+
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)# list /sys application service Device_ID.app/Device_ID
+sys application service Device_ID.app/Device_ID {
+    device-group none
+    inherited-devicegroup true
+    inherited-traffic-group true
+    lists {
+        advanced_features__serverssl {
+            value { /Common/serverssl }
+        }
+        vs_config__vs {
+            value { /Common/DVWA_Service_HTTPS /Common/DVWA_Service_HTTPS-Redirect- /Common/Hackazon_Service_HTTPS /Common/Hackazon_Service_HTTPS-Redirect- /Common/StaticWeb_Service_HTTPS /Common/StaticWeb_Service_HTTPS-Redirect- /Common/serviceMain /Common/serviceMain-Redirect- }
+        }
+    }
+    tables {
+        adv_cookie__endpoints {
+            column-names { endpoint }
+        }
+        adv_js_injection__excluded_ep {
+            column-names { endpoint }
+        }
+        adv_js_injection__injected_ep {
+            column-names { endpoint }
+        }
+        adv_js_injection__jsApi_table {
+            column-names { js_api_ep }
+        }
+        cookie__endpoints { }
+        js_injection__excluded_ep { }
+        js_injection__injected_ep { }
+        js_injection__jsApi_table { }
+    }
+    template F5.analytics
+    traffic-group traffic-group-1
+    variables {
+        advanced_features__debug {
+            value Yes
+        }
+        advanced_features__use_domain_as_sni {
+            value Yes
+        }
+        advanced_features__vip2vip_ip {
+            value 1.2.3.4
+        }
+        advanced_features__xff {
+            value Yes
+        }
+        iapp_settings__clean {
+            value No
+        }
+        iapp_settings__config_selection {
+            value Advanced
+        }
+        iapp_settings__kill_switch {
+            value No
+        }
+        iapp_settings__product {
+            value did
+        }
+        js_injection__add_additional_jsApi_ep {
+            value No
+        }
+        js_injection__exclude_endpoint {
+            value No
+        }
+        js_injection__inject_by_endpoint {
+            value No
+        }
+        js_injection__injection_location {
+            value "After <head>"
+        }
+        js_injection__injection_path {
+            value https://dip.zeronaught.com/__imp_apg__/js/f5cs-samplesample-xsamplex.js
+        }
+        js_injection__script_attribute {
+            value Async
+        }
+        pool__check {
+            value No
+        }
+        pool__cookie_persistence {
+            value Disable
+        }
+        pool__use_different_domain {
+            value No
+        }
+    }
+}
+admin@(ip-10-1-1-241)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+

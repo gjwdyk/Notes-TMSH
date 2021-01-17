@@ -1,0 +1,217 @@
+
+
+
+╔═╦══════════════════╦═╗
+║ ║                  ║ ║
+╠═╬══════════════════╬═╣
+║ ║   F5 Device ID   ║ ║
+╠═╬══════════════════╬═╣
+║ ║                  ║ ║
+╚═╩══════════════════╩═╝
+
+╔═════════════════════════════════════════════╗
+║   The Original iRules from Device ID iApp   ║
+╚═════════════════════════════════════════════╝
+
+proc base64url_decode { var_b64_url } {
+  set var_b64 "[string map [list - + _ / ] $var_b64_url]"
+  if { [string length $var_b64] % 4 != 0 } {
+      append var_b64 [string repeat = [expr {4 - [string length $var_b64] % 4}]]
+  }
+  return [b64decode $var_b64]
+}
+
+when RULE_INIT {
+    set b64_key "0"
+    # using static variable for the key as there is a single key per customer.
+    # if at some point, multiple key support is required (per app key), we will need to use local variable
+    # and live with the performance degradation.
+    # using global variable is not accepted. see https://support.f5.com/csp/article/K13033
+    set static::key 0
+
+    if {$b64_key != 0} {
+        set static::key [b64decode $b64_key]
+    }
+}
+
+# Set the lowest priority to not disturb the Customer iRules
+priority 1000
+
+proc route_shape_traffic {use_different_ssl shape_pool shape_debug} {
+     # This variable used when customer choose to use different ssl for shape pools
+    set shape_ssl_vs_name  /Common/Device_ID_shape_ssl_vs
+    if { $use_different_ssl } {
+        persist none
+        # In case a different ssl is required for APG pool, disable SSL on serverside to pass data to the encrypting VS
+        
+        virtual $shape_ssl_vs_name
+        if { $shape_debug }{ log local0. "successfully routed to $shape_ssl_vs_name" }
+    } else {
+        
+        pool $shape_pool
+    }
+}
+
+proc request_js {use_different_ssl shape_pool kill_switch http_path shape_debug} {
+    # If request is for 1JS or telemetry request, route it to Shape
+    if { $shape_debug }{ log local0. "[IP::client_addr]:[TCP::client_port]: Got JS request: ${http_path}" }
+
+    # Test if the pool has active members before sending traffic
+    if  { [active_members ${shape_pool}] >= 1 && $kill_switch == 0 } {
+        snat automap
+        call route_shape_traffic $use_different_ssl ${shape_pool} $shape_debug
+        return 0
+    } else {
+        # If the ShapeShifter pool is not available, then no need to forward this to origin, send back an empty 200 OK
+        # Can also put an empty file at Origin for the Shape js request for occasions when the iRule is disabled.
+        if { $shape_debug }{ log local0. "[IP::client_addr]:[TCP::client_port]: ShapeJS URI, but ${shape_pool} pool is down or Kill Switch is active!!! Sent HTTP 200 response"}
+        HTTP::respond 200 noserver Cache-Control "no-cache"
+        return 1
+    }
+}
+
+when SERVER_CONNECTED {
+    # Disable SSL serverside profile for SSL offload use cases
+    if {[LB::server port] == 80 } {
+        
+    }
+}
+
+when CLIENT_ACCEPTED {
+    set cookie_name "_imp_apg_r_"
+    set alg "aes-128-cbc"
+    set fr_header ""
+    set safe_endpoints /Common/Device_ID_SafeEndpoint
+    set safe_domain "dip.zeronaught.com"
+    set is_did 1
+    # Log debug messages (1=yes, 0=no)
+    # Set to 0 when not debugging this iRule
+    set shape_debug 1
+
+    set JS_DG /Common/Device_ID_ShapeJs
+    # Entry points that should be injected with 1JS
+    set included_entry_points /Common/Device_ID_includedEntryPoints
+    # Inject 1JS to specific path
+    set inject_specific_path 0
+    # Entry points that should be excluded from 1JS injection
+    set excluded_entry_points /Common/Device_ID_excludedEntryPoints
+    # Exclude 1JS Injection from specific paths
+    set inject_exclude_path 0
+    # Set 'Rewrite XFF header with Connecting IP' variable
+    set rewrite_xff 1
+
+    # Set 'Add different server SSL profile for Shape pool' variable
+    # If true then we split traffic into 2 different VS (client<->bip<->ws, bip<->APG)
+    set use_different_ssl true
+    # APG pool for 1JS routing
+    set shape_pool /Common/Device_ID_ShapeProdPool
+    # Kill switch/bypass of Shape API (1=yes, 0=no)
+    set kill_switch 0
+}
+
+when HTTP_REQUEST {
+
+    # bypass the injection if needed (HTML::disable)
+    set bypass 0
+
+    # Remove trailing '/' from HTTP::path (if no trailing slash, nothing will happened)
+    set http_path [string tolower [HTTP::path -normalized]]
+    if { not ( ${http_path} equals "/" ) } { set http_path [string trimright ${http_path} "/"] }
+    # JavaScript path
+    set js_path [HTTP::path -normalized]
+
+    #Save the name of virtual's default pool
+    set app_pool [LB::server pool]
+    
+    if { $kill_switch } {
+        if { $shape_debug }{ log local0. "Kill switch activated, suspending processing."}
+        HTML::disable
+        return
+    }
+
+    # Disable the HTML if injection configured to specific pages
+    if { $inject_specific_path } {
+        HTML::disable
+        foreach {endpoint} [class names $included_entry_points] {
+            if { ${http_path} matches_glob $endpoint } {
+                HTML::enable
+            }
+        }
+    }
+    if { $inject_exclude_path } {
+        foreach {endpoint} [class names $excluded_entry_points] {
+            if { ${http_path} matches_glob $endpoint } {
+              HTML::disable
+            }
+        }
+    }
+
+    if { [class match [string tolower $js_path] starts_with /Common/Device_ID_SafeJsApiEp] || ( [HTTP::method] eq "GET" && [class match $js_path equals $JS_DG]) } {
+        set bypass 1
+        # If request is for 1JS or JS API call, route it to Shape and get out
+        HTTP::host $safe_domain
+        if { [call request_js $use_different_ssl $shape_pool $kill_switch ${http_path} $shape_debug] } {
+            return
+        }
+    } else {
+        # No need for cookie processing in DID
+        if {$is_did} {return}
+        if { [HTTP::header exists $fr_header] } {
+            if { $shape_debug } { log local0. "WARNING: Found $fr_header! removing" }
+            HTTP::header remove $fr_header
+        }
+        if { [HTTP::cookie exists $cookie_name]} {
+            if { $static::key != 0 } {
+                foreach {endpoint} [class names $safe_endpoints] {
+                    if {${http_path} matches_glob $endpoint} {
+                        catch {
+                            set cookie_value [URI::decode [HTTP::cookie value $cookie_name]]
+                            set cookie_value [lindex [regexp -inline {\"fr\":\"(.*?)\"} $cookie_value] 1]
+                            set iv [call base64url_decode [substr $cookie_value 0 24]]
+                            set enc_data [call base64url_decode [substr $cookie_value 24]]
+                            # If customer entered wrong encryption key, we won't be able to decrypt the cookie so we won't process it
+                            set dec_fr_value [CRYPTO::decrypt -alg $alg -key $static::key -iv $iv $enc_data]
+                            if { $shape_debug } { log local0. "$cookie_name decrypted content: $dec_fr_value" }
+                            HTTP::header insert $fr_header $dec_fr_value
+                        } error
+                        if { $error != "" && $shape_debug } {
+                            log local0. "Could not decrypt fr cookie: $error"
+                        }
+                        break
+                    }
+                }
+            }
+            HTTP::cookie remove $cookie_name
+        }
+    }
+
+    # Insert XFF header
+    if { $rewrite_xff && !$bypass } {
+        HTTP::header insert X-Forwarded-For [IP::client_addr]
+    }
+}
+
+when HTTP_RESPONSE {
+
+    # Clear the injected 1JS flag for each response.
+    if {[info exists is_js_injected]} {
+        unset is_js_injected
+    }
+
+    # Do not inject javascript for Shape interstitials
+    if { ([info exists bypass] && $bypass)} {
+        HTML::disable
+    }
+}
+
+
+
+╔═╦═════════════════╦═╗
+║ ║                 ║ ║
+╠═╬═════════════════╬═╣
+║ ║ End of Document ║ ║
+╠═╬═════════════════╬═╣
+║ ║                 ║ ║
+╚═╩═════════════════╩═╝
+
+
