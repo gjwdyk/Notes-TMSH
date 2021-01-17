@@ -43,14 +43,14 @@ Improvements :
 - [ ] "Big-IP Modules to be Provisioned" defaulted to `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
 - [ ] Additional URL input for [F5_Configurations.sh](F5_Configurations.sh) which will be uploaded automatically to Big-IP Unit and executed as part of on-boarding process.
 - [ ] The sample/default [F5_Configurations.sh](F5_Configurations.sh) file includes:<br>
-    - [ ] Nodes, Pools and Monitors
-    - [ ] TCP, HTTP and Client-Side-TLS profiles
-    - [ ] TCP and HTTP Analytics profiles
-    - [ ] Virtual Servers
-    - [ ] Security Log profiles
-    - [ ] IP Intelligence policy
-    - [ ] DoS Device and Profile configurations
-    - [ ] Device ID
+   - [ ] Nodes, Pools and Monitors
+   - [ ] TCP, HTTP and Client-Side-TLS profiles
+   - [ ] TCP and HTTP Analytics profiles
+   - [ ] Virtual Servers
+   - [ ] Security Log profiles
+   - [ ] IP Intelligence policy
+   - [ ] DoS Device and Profile configurations
+   - [ ] Device ID
 - [ ] [Device ID's iApp Template](Device-ID/f5.analytics.tmpl) already uploaded automatically to Big-IP Unit
 
 
