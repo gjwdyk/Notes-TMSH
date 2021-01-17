@@ -37,7 +37,7 @@ Improvement from the above CloudFormation. To use the scripts, launch the [LAMP_
 
 <a href="https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=BigIP-LAMP-Win&templateURL=https://aws-f5-singapore-hc-demo-bucket-files.s3-ap-southeast-1.amazonaws.com/CF/LAMP_Win_SSLoL_eMail_Lidsa_AS3.20_AddOn_TMSH.json"><img align="center" src="https://github.com/gjwdyk/CloudFormation-Big-IP-LAMPv7/raw/master/Figures/JigokuShoujoLaunchStack.png" width="140" height="22"/></a>
 
-Improvement :
+Improvements :
 
 - [ ] "AS3 Declaration URL" already default to `none`
 - [ ] "Big-IP Modules to be Provisioned" already default to `ltm:nominal,avr:nominal,asm:nominal,fps:nominal,afm:nominal`
@@ -52,7 +52,8 @@ Improvement :
 
 To Do:
 
-- [ ] Device ID Configuration
+- [ ] Device ID Logging to ELK
+- [ ] DataSafe Tools
 - [ ] ASM Configuration (when possible)
 - [ ] APM Configuration (when possible)
 - [ ] Translate to Ansible
