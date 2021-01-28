@@ -552,7 +552,7 @@ tmsh modify ltm virtual /Common/DVWA_Service_HTTPS-Redirect-      { profiles add
 tmsh modify ltm virtual /Common/serviceMain-Redirect-             { profiles add { /Common/DeviceID_ShapeJSHTML /Common/DeviceID_OneConnect } rules { /Common/HTTP_Log /Common/DeviceID_ShapeiRule _sys_https_redirect } }
 tmsh modify ltm virtual /Common/StaticWeb_Service_HTTPS-Redirect- { profiles add { /Common/DeviceID_ShapeJSHTML /Common/DeviceID_OneConnect } rules { /Common/HTTP_Log /Common/DeviceID_ShapeiRule _sys_https_redirect } }
 tmsh modify ltm virtual /Common/Hackazon_Service_HTTPS-Redirect-  { profiles add { /Common/DeviceID_ShapeJSHTML /Common/DeviceID_OneConnect } rules { /Common/HTTP_Log /Common/DeviceID_ShapeiRule _sys_https_redirect } }
-tmsh create ltm virtual /Common/DeviceID_ShapeSSLVS { rules { /Common/DeviceID_HTTPPayLoadLog } }
+tmsh modify ltm virtual /Common/DeviceID_ShapeSSLVS { rules { /Common/DeviceID_HTTPPayLoadLog } }
 
 
 
