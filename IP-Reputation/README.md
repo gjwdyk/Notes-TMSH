@@ -3,9 +3,12 @@
 The below procedure applies ***only*** to BIG-IP 15.1.4 and later for BIG-IP 15.1.x branch.
 
 References:
-- [ ] [K03011490: Verifying connectivity for the IPI Subscription service](https://support.f5.com/csp/article/K03011490) .
+- [ ] [K03011490: Verifying connectivity for the IPI Subscription service](https://support.f5.com/csp/article/K03011490)
 - [ ] [K18514842: Verification of IPI Subscription service verification using tmsh command](https://support.f5.com/csp/article/K18514842)
 - [ ] [Enabling IP Address Intelligence](https://techdocs.f5.com/en-us/bigip-14-0-0/big-ip-local-traffic-manager-implementations-14-0-0/enabling-ip-address-intelligence.html)
+
+Ensure also that the unit is using the Traffic's Interface to reach the Internet, not the Management Interface (i.e. the unit has default gateway value on the TMOS side, as well as all applicable Firewalls are opened for the unit's traffic interface to reach the Internet).
+Using the Management Interface to update the IP Reputation DB is much more tricky, and the success rate of that kind of configuration is low.
 
 Turn on the `Debug` level first. Follow the below example commands:
 
@@ -232,7 +235,7 @@ iprep threats list for ip = 1.10.16.175 is:
 Note that IP Reputation DB is very dynamic.
 One day an IP Address can be categorized, the other day the same IP Address can be removed from the DB.
 Also, there are a few DB source available in the Internet.
-An IP Address can fall into one category in BrightCloud's DB, but can be not cetegorized or cetagorized differently in other vendor's DB.
+An IP Address can fall into one category in BrightCloud's DB, but can be not categorized or categorized differently in other vendor's DB.
 
 After the above tests are all OK, you can use the DB in either or both on Application Security configuration:
 
