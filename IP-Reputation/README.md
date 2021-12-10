@@ -8,7 +8,7 @@ References:
 - [ ] [Enabling IP Address Intelligence](https://techdocs.f5.com/en-us/bigip-14-0-0/big-ip-local-traffic-manager-implementations-14-0-0/enabling-ip-address-intelligence.html)
 
 Ensure also that the unit is using the Traffic's Interface to reach the Internet, not the Management Interface (i.e. the unit has default gateway value on the TMOS side, as well as all applicable firewalls are opened for the unit's traffic interface to reach the Internet).
-Using the Management Interface to update the IP Reputation DB is much more tricky, and the success rate of that kind of configuration is low.
+Using the Management Interface to update the IP Reputation DB is much more tricky, and the success rate of making that kind of configuration working is low.
 
 Turn on the `Debug` level first. Follow the below example commands:
 
