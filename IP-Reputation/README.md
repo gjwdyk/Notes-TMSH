@@ -2,7 +2,10 @@
 
 The below procedure applies ***only*** to BIG-IP 15.1.4 and later for BIG-IP 15.1.x branch.
 
-Reference: [K03011490: Verifying connectivity for the IPI Subscription service](https://support.f5.com/csp/article/K03011490) .
+References:
+- [ ] [K03011490: Verifying connectivity for the IPI Subscription service](https://support.f5.com/csp/article/K03011490) .
+- [ ] [K18514842: Verification of IPI Subscription service verification using tmsh command](https://support.f5.com/csp/article/K18514842)
+- [ ] [Manual Chapter : Enabling IP Address Intelligence](https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/ltm-implementations-13-1-0/8.html)
 
 Turn on the `Debug` level first. Follow the below example commands:
 
