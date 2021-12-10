@@ -242,6 +242,8 @@ And Network Firewall configuration:
 
 ![Network Firewall IPI Configuration](NetworkFirewallIPIConfiguration.png)
 
+Note that if you configure/use IPI on both Network Firewall and Application Security, then statistic will appear only on one of the report (not both reports), depending on how you configure the Virtual Server and Security Policies for the Virtual Server.
+
 
 
 <br><br><br>
