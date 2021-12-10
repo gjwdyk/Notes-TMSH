@@ -234,6 +234,14 @@ One day an IP Address can be categorized, the other day the same IP Address can 
 Also, there are a few DB source available in the Internet.
 An IP Address can fall into one category in BrightCloud's DB, but can be not cetegorized or cetagorized differently in other vendor's DB.
 
+After the above tests are all OK, you can use the DB in either or both on Application Security configuration:
+
+![Application Security IPI Configuration](ApplicationSecurityIPIConfiguration.png)
+
+And Network Firewall configuration:
+
+![Network Firewall IPI Configuration](NetworkFirewallIPIConfiguration.png)
+
 
 
 <br><br><br>
