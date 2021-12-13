@@ -7,8 +7,8 @@ References:
 - [ ] [K18514842: Verification of IPI Subscription service verification using tmsh command](https://support.f5.com/csp/article/K18514842)
 - [ ] [Enabling IP Address Intelligence](https://techdocs.f5.com/en-us/bigip-14-0-0/big-ip-local-traffic-manager-implementations-14-0-0/enabling-ip-address-intelligence.html)
 
-Ensure also that the unit is using the Traffic's Interface to reach the Internet, not the Management Interface (i.e. the unit has default gateway value on the TMOS side, as well as all applicable firewalls are opened for the unit's traffic interface to reach the Internet).
-Using the Management Interface to update the IP Reputation DB is much more tricky, and the success rate of making that kind of configuration working is low.
+Ensure also that the Big-IP unit is using the Traffic's Interface to reach the Internet, not the Management Interface (i.e. the unit has default gateway value on the TMOS side, as well as all applicable firewalls are opened for the unit's traffic interface to reach the Internet).
+Updating the IP Reputation DB through the Management Interface is not designed to work that way.
 
 Turn on the `Debug` level first. Follow the below example commands:
 
